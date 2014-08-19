@@ -1,0 +1,18 @@
+\name{man}
+\alias{man}
+\title{Find and display documentation for a package
+Opens the CRAN documentation for a package or builds it from the local R library}
+\usage{
+  man(package, method = c("web", "system"))
+}
+\arguments{
+  \item{package}{name of a package, with or without quotes}
+
+  \item{method}{either \code{"web"} or \code{"system"}}
+}
+\description{
+  Find and display documentation for a package Opens the
+  CRAN documentation for a package or builds it from the
+  local R library
+}
+

@@ -1,0 +1,15 @@
+\name{lsall}
+\alias{lsall}
+\title{ls with all.names=TRUE by default}
+\usage{
+  lsall(..., all.names = TRUE)
+}
+\arguments{
+  \item{...}{args to \code{ls()}}
+
+  \item{all.names}{Show normally hidden names?}
+}
+\description{
+  ls with all.names=TRUE by default
+}
+

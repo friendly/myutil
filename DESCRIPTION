@@ -1,0 +1,13 @@
+Package: myutil
+Type: Package
+Title: My utility functions
+Version: 1.4-1
+Date: 2013-06-03
+Author: Michael Friendly
+Maintainer: Michael Friendly <friendly@yorku.ca>
+Description: My utility functions for Rgui
+License: GPL-2
+Collate:
+    'myutil.R'
+    'rgb2col.R'
+    'sourceDir.R'

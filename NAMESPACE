@@ -1,0 +1,7 @@
+export(cd)
+export(eps)
+export(man)
+export(rgb2col)
+export(setwd)
+export(short.path)
+export(sourceDir)
