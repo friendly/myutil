@@ -4,8 +4,8 @@
 #' 
 #' Sourcing functions or reading data files can be a problem when they are stored in a Dropbox
 #' folder you access on different machines.  This function uses the Dropbox file, 
-#' \code{info.json}, always found at either \code{\%APPDATA\%\Dropbox\info.json} or
-#' \code{\%LOCALAPPDATA\%\Dropbox\info.json}
+#' \code{info.json}, always found at either \code{\%APPDATA\%\\Dropbox\\info.json} or
+#' \code{\%LOCALAPPDATA\%\\Dropbox\\info.json}
 #' 
 #' @return The path to the Dropbox folder, a character string
 #' @importFrom jsonlite fromJSON
@@ -15,7 +15,7 @@
 #' @examples
 #' \dontrun{
 #' .Dropbox <- dropbox_folder()
-#' my_file <- paste(.Dropbox, "R/my_file.csv", sep="/")}
+#' my_file <- paste(.Dropbox, "R/my_file.csv", sep="/")
 #' mydata <- read.csv(my_file)
 #' }
 

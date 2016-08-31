@@ -5,7 +5,8 @@ Version: 1.5-1
 Date: 2016-08-31
 Author: Michael Friendly
 Maintainer: Michael Friendly <friendly@yorku.ca>
-Description: A collection of my utility functions for Rgui, prepared as a package.
+Description: A collection of my utility functions for Rgui, prepared as a
+    package.
 License: GPL-2
 Collate:
     'myutil.R'
@@ -13,4 +14,6 @@ Collate:
     'sourceDir.R'
     'ls.objects.R'
     'dropbox_folder.R'
-Imports: jsonlite    
+Imports:
+    jsonlite
+RoxygenNote: 5.0.1

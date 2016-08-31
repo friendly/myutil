@@ -97,6 +97,7 @@ man <- function(package, method=c("web", "system")){
 #' @param mar plot margins, c(bottom, left, top, right)
 #' @param mgp margin line (in mex units) for the axis title axis labels and axis line.
 #' @param tck length of tick marks
+#' @param ... other arguments passed to \code{par}
 #' @return the old \code{par()} settings, invisibly
 #' @export
 
