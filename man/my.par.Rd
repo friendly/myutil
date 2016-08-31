@@ -12,6 +12,7 @@
   axis labels and axis line.}
 
   \item{tck}{length of tick marks}
+  \item{\dots}{other arguments to \code{par}}
 }
 \value{
   the old \code{par()} settings, invisibly

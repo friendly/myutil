@@ -1,15 +1,16 @@
 Package: myutil
 Type: Package
 Title: My utility functions
-Version: 1.5-0
-Date: 2016-08-02
+Version: 1.5-1
+Date: 2016-08-31
 Author: Michael Friendly
 Maintainer: Michael Friendly <friendly@yorku.ca>
-Description: My utility functions for Rgui
+Description: A collection of my utility functions for Rgui, prepared as a package.
 License: GPL-2
 Collate:
     'myutil.R'
     'rgb2col.R'
     'sourceDir.R'
     'ls.objects.R'
-    
+    'dropbox_folder.R'
+Imports: jsonlite    

@@ -16,7 +16,7 @@ I like to have available in Rgui.
 Package: \tab myutil\cr
 Type: \tab Package\cr
 Version: \tab 1.5\cr
-Date: \tab 2013-08-02\cr
+Date: \tab 2013-08-30\cr
 License: \tab GPL-2\cr
 }
 

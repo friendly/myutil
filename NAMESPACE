@@ -5,3 +5,6 @@ export(rgb2col)
 export(setwd)
 export(short.path)
 export(sourceDir)
+export(ls.objects)
+export(dropbox_folder)
+

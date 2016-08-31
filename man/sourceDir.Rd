@@ -9,7 +9,7 @@
 }
 
 \usage{
-  sourceDir(path, pattern = "\\.[Rr]$", trace = TRUE, ...)
+  sourceDir(path, pattern = "\\\\.[Rr]$", trace = TRUE, ...)
 }
 \arguments{
   \item{path}{path to a directory of R files}
