@@ -15,7 +15,7 @@
 #' @examples
 #' \dontrun{
 #' .Dropbox <- dropbox_folder()
-#' my_file <- paste(.Dropbox, "R/my_file.csv", sep="/")
+#' my_file <- paste(.Dropbox, "R/my_file.csv", sep="")
 #' mydata <- read.csv(my_file)
 #' }
 
@@ -25,12 +25,12 @@ dropbox_folder <- function() {
  	if (!require(jsonlite, quietly=TRUE)) stop ("You need to install the jsonlite package.")
 
 	file_name<-list.files(paste(Sys.getenv(x = "APPDATA"),"Dropbox", sep="/"), 
-	                      pattern = "*.json", full.names = TRUE)
+	                      pattern = "info*.json", full.names = TRUE)
 	if (length(file_name)==0){
 	   file_name<-list.files(paste(Sys.getenv(x = "LOCALAPPDATA"),"Dropbox", sep="/"), 
-	                         pattern = "*.json", full.names = TRUE)}
+	                         pattern = "info*.json", full.names = TRUE)}
 	
 	file_content <- jsonlite::fromJSON(txt=file_name)$personal
-	path <-file_content$path
+	path <-paste0(file_content$path, "/")
 	path
 }
