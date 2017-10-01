@@ -8,6 +8,7 @@
 #' @param near Threshold for nearest color from \code{colors()}.  The default corresponds to 1 JND in Lab space.
 #' @return     A vector of color names, or the hex value if no color is close enough
 #' @export
+#' @importFrom grDevices colors col2rgb convertColor
 
 #' @examples
 #' cols <- c("#010101", "#EEEEEE", "#AA0000", "#00AA00", "#0000AA", "#AAAA00", "#AA00AA", "#00AAAA")

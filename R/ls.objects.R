@@ -15,6 +15,7 @@
 
 #' @export
 #' @source Peter Pikal, from R-help 8-2-2016
+#' @importFrom utils object.size
 #'
 #' @examples
 #' ls.objects()

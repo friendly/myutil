@@ -6,7 +6,7 @@
 #' @param method	either \code{"web"} or \code{"system"}.  \code{"web"} uses the manual from CRAN.
 #'                \code{"system"}  builds the documentation from your local R version.
 #' @export
-
+#' @importFrom utils browseURL
 
 man <- function(package, method=c("system", "web")){
   
