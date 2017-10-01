@@ -15,8 +15,8 @@ I like to have available in Rgui.
 \tabular{ll}{
 Package: \tab myutil\cr
 Type: \tab Package\cr
-Version: \tab 1.5\cr
-Date: \tab 2013-08-30\cr
+Version: \tab 1.6-0\cr
+Date: \tab 2017-10-01\cr
 License: \tab GPL-2\cr
 }
 
