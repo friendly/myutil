@@ -7,10 +7,10 @@
 #' @param pattern filename pattern to source
 #' @param trace  list file names as sourced
 #' @param ... other arguments passed to \code{source}
+#' @source This comes from \url{https://github.com/geneorama/geneorama/blob/master/R/sourceDir.R}
 #' @export
 #' 
 
-# from: https://github.com/geneorama/geneorama/blob/master/R/sourceDir.R
 
 sourceDir <-
   function(path, pattern="\\.[Rr]$", trace = TRUE, ...) {
