@@ -9,11 +9,13 @@ Description: A collection of my utility functions for Rgui, prepared as a
     package.
 License: GPL-2
 Collate:
+    'man.R'
     'myutil.R'
     'rgb2col.R'
     'sourceDir.R'
     'ls.objects.R'
     'dropbox_folder.R'
+    'update_github.R'
 Imports:
     jsonlite
-RoxygenNote: 5.0.1
+RoxygenNote: 6.0.1
