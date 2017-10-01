@@ -22,4 +22,3 @@ Source all R files in a given directory
 Source all R files in a given directory into the current R session. 
 Typically used to test some changes in a package without NAMESPACE issues.
 }
-

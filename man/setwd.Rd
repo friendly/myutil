@@ -12,4 +12,3 @@ setwd(dir)
 \description{
 Set Working Directory and Display in Window Title
 }
-

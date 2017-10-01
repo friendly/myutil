@@ -21,8 +21,7 @@ folder you access on different machines.  This function uses the Dropbox file,
 \examples{
 \dontrun{
 .Dropbox <- dropbox_folder()
-my_file <- paste(.Dropbox, "R/my_file.csv", sep="/")
+my_file <- paste(.Dropbox, "R/my_file.csv", sep="")
 mydata <- read.csv(my_file)
 }
 }
-

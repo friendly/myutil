@@ -21,4 +21,3 @@ the old \code{par()} settings, invisibly
 \description{
 Set nicer default par()
 }
-

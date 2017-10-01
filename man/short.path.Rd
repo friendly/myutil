@@ -14,4 +14,3 @@ short.path(dir, len = 2)
 \description{
 Return a shortened version of a path
 }
-

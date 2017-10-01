@@ -23,4 +23,3 @@ eps(file = "Rplot.eps", horizontal = FALSE, paper = "special",
 Specialized version of postscript for eps files
 \code{eps} simply calls \code{postscript} with sensible defaults
 }
-

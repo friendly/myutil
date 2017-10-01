@@ -31,4 +31,3 @@ cols <- c("#010101", "#EEEEEE", "#AA0000", "#00AA00", "#0000AA", "#AAAA00", "#AA
 (nms <- rgb2col(cols))
 pie(rep(1, 2*length(cols)), labels=c(rbind(cols, nms)), col=c(rbind(cols, nms)))
 }
-

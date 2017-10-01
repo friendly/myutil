@@ -64,6 +64,7 @@ lsall  <-  function(..., all.names = TRUE) {
 #' @param height,width	height and width of eps graphic
 #' @param ... other arguments passed down
 #' @export
+#' @importFrom grDevices postscript
 
 
 	eps <- function(file="Rplot.eps", horizontal=FALSE, paper="special", height=6, width=6, ...) {
@@ -79,6 +80,7 @@ lsall  <-  function(..., all.names = TRUE) {
 #' @param ... other arguments passed to \code{par}
 #' @return the old \code{par()} settings, invisibly
 #' @export
+#' @importFrom graphics par
 
 my.par <- function(mar=c(3,3,2,1), mgp=c(2,.7,0), tck=-.01, ...) {
   op <- par(mar=mar, mgp=mgp, tck=tck, ...)

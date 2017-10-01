@@ -14,4 +14,3 @@ lsall(..., all.names = TRUE)
 \description{
 ls with all.names=TRUE by default
 }
-
