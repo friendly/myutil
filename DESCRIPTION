@@ -1,8 +1,8 @@
 Package: myutil
 Type: Package
 Title: My utility functions
-Version: 1.6-0
-Date: 2017-10-01
+Version: 1.7.0
+Date: 2024-07-30
 Author: Michael Friendly
 Maintainer: Michael Friendly <friendly@yorku.ca>
 Description: A collection of my utility functions for Rgui, prepared as a
@@ -16,6 +16,7 @@ Collate:
     'ls.objects.R'
     'dropbox_folder.R'
     'update_github.R'
+    'reset-par.R'
 Imports:
     jsonlite
 RoxygenNote: 6.0.1
