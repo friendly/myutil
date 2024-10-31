@@ -14,3 +14,10 @@ cd(dir)
 Shorthand for setwd, remembering previous directory
 A setwd replacement, allowing \code{cd()} to be like \code{cd -} on unix (return to last dir)
 }
+\examples{
+\dontrun{
+cd("~")     # go HOME
+cd()        # return where we were
+}
+
+}

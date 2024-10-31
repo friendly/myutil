@@ -21,6 +21,12 @@ setwd <-
 
 #' @param dir path to new directory
 #' @export
+#' @examples
+#' \dontrun{
+#' cd("~")     # go HOME
+#' cd()        # return where we were
+#' }
+#' 
 
   cd <- function(dir) {
   	if(missing(dir)) dir <- .lastdir
@@ -67,8 +73,13 @@ lsall  <-  function(..., all.names = TRUE) {
 #' @importFrom grDevices postscript
 
 
-	eps <- function(file="Rplot.eps", horizontal=FALSE, paper="special", height=6, width=6, ...) {
-	    postscript(file=file, onefile=FALSE, horizontal=horizontal, paper=paper, height=height, width=width,...)
+	eps <- function(file="Rplot.eps", 
+	                horizontal=FALSE, 
+	                paper="special", 
+	                height=6, width=6, ...) {
+	    postscript(file=file, onefile=FALSE, 
+	               horizontal=horizontal, 
+	               paper=paper, height=height, width=width,...)
 	  }
 
 
