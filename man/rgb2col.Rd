@@ -18,7 +18,8 @@ rgb2col(cols, near = 2.3)
 \item{near}{Threshold for nearest color from \code{colors()}.  The default corresponds to 1 JND in Lab space.}
 }
 \value{
-A vector of color names, or the hex value if no color is close enough
+\if{html}{\out{<div class="sourceCode">}}\preformatted{A vector of color names, or the hex value if no color is close enough
+}\if{html}{\out{</div>}}
 }
 \description{
 Find Named Color Closest to Given Hex RGB Colors

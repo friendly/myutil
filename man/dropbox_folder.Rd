@@ -14,7 +14,7 @@ The path to the Dropbox folder, a character string
 }
 \description{
 Sourcing functions or reading data files can be a problem when they are stored in a Dropbox
-folder you access on different machines.  This function uses the Dropbox file, 
+folder you access on different machines.  This function uses the Dropbox file,
 \code{info.json}, always found at either \code{\%APPDATA\%\\Dropbox\\info.json} or
 \code{\%LOCALAPPDATA\%\\Dropbox\\info.json}
 }

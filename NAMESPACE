@@ -6,20 +6,38 @@ export(eps)
 export(ls.objects)
 export(man)
 export(my.par)
+export(release_build)
+export(release_check)
+export(release_check_win)
+export(release_cran_comments)
+export(release_document)
+export(release_preflight)
+export(release_revdep)
+export(release_run_all)
+export(release_site)
+export(release_spelling)
+export(release_spelling_add)
+export(release_urls)
+export(restore_installed_pkgs)
 export(rgb2col)
+export(save_installed_pkgs)
 export(setwd)
 export(short.path)
 export(sourceDir)
 export(update_github)
 export(use_data_doc)
 importFrom(devtools,install_github)
-importFrom(grDevices,col2rgb)
-importFrom(grDevices,colors)
-importFrom(grDevices,convertColor)
-importFrom(grDevices,postscript)
+importFrom(grDevices,
+  col2rgb,
+  colors,
+  convertColor,
+  postscript
+)
 importFrom(graphics,par)
 importFrom(jsonlite,fromJSON)
-importFrom(utils,browseURL)
-importFrom(utils,installed.packages)
-importFrom(utils,object.size)
-importFrom(utils,packageDescription)
+importFrom(utils,
+  browseURL,
+  installed.packages,
+  object.size,
+  packageDescription
+)

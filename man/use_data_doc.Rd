@@ -9,8 +9,8 @@ use_data_doc(object, filename = NULL, name = NULL, labels = NULL)
 \arguments{
 \item{object}{an R object to be documented as a data set}
 
-\item{filename}{usually, a \code{connection} or a character string giving the name of the file 
-to which the documentation shell should be written. The default corresponds to a file 
+\item{filename}{usually, a \code{connection} or a character string giving the name of the file
+to which the documentation shell should be written. The default corresponds to a file
 whose name is \code{name} followed by \code{".R"}. Can also be \code{NA} (see details below).}
 
 \item{name}{a character string specifying the name of the object. Defaults to the name of \code{object}.}
@@ -18,8 +18,8 @@ whose name is \code{name} followed by \code{".R"}. Can also be \code{NA} (see de
 \item{labels}{a character vector of variable labels or strings describing each column in the data set.}
 }
 \value{
-If \code{filename} is \code{NA}, a list-style representation of the documentation shell. 
-       Otherwise, the name of the file written to is returned invisibly.
+If \code{filename} is \code{NA}, a list-style representation of the documentation shell.
+Otherwise, the name of the file written to is returned invisibly.
 }
 \description{
 Generates a shell of documentation for a data set or other object in roxygen format.
@@ -27,11 +27,11 @@ This function was created by editing \code{\link[utils]{promptData}} to replace
 the old style \code{.Rd} formatting with code suitable for processing with \code{\link[devtools]{document}}.
 }
 \details{
-Unless \code{filename} is \code{NA}, a documentation shell for \code{object} is written in roxygen format to the file specified 
+Unless \code{filename} is \code{NA}, a documentation shell for \code{object} is written in roxygen format to the file specified
 by \code{filename}, and a message about this is given.
 
-If \code{filename} is \code{NA}, a list-style representation of the documentation shell is created 
-and returned. Writing the shell to a file amounts to \code{cat(unlist(x), file = filename, sep = "\n")}, 
+If \code{filename} is \code{NA}, a list-style representation of the documentation shell is created
+and returned. Writing the shell to a file amounts to \code{cat(unlist(x), file = filename, sep = "\n")},
 where \code{x} is the list-style representation.
 
 Currently, only data frames are handled explicitly by the code.

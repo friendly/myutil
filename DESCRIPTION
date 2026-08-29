@@ -1,14 +1,22 @@
 Package: myutil
 Type: Package
 Title: My utility functions
-Version: 1.8.0
-Date: 2024-10-30
+Version: 1.9.0
+Date: 2026-08-29
 Author: Michael Friendly
 Maintainer: Michael Friendly <friendly@yorku.ca>
-Description: A collection of my utility functions, some forset Rgui, prepared as a
-    package.
+Description: A collection of my utility functions, some for Rgui, but now some for RStudio. Put in a
+    package for convenience
 License: GPL-2
 Encoding: UTF-8
 Imports:
     jsonlite
-RoxygenNote: 7.3.2
+Suggests:
+    devtools,
+    glue,
+    pkgdown,
+    revdepcheck,
+    spelling,
+    urlchecker
+Roxygen: list(markdown = TRUE)
+Config/roxygen2/version: 8.1.0

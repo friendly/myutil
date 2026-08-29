@@ -3,7 +3,7 @@
 \name{sourceDir}
 \alias{sourceDir}
 \title{Source all R files in a given directory
-Source all R files in a given directory into the current R session. 
+Source all R files in a given directory into the current R session.
 Typically used to test some changes in a package without NAMESPACE issues.}
 \source{
 This comes from \url{https://github.com/geneorama/geneorama/blob/master/R/sourceDir.R}
@@ -22,6 +22,6 @@ sourceDir(path, pattern = "\\\\.[Rr]$", trace = TRUE, ...)
 }
 \description{
 Source all R files in a given directory
-Source all R files in a given directory into the current R session. 
+Source all R files in a given directory into the current R session.
 Typically used to test some changes in a package without NAMESPACE issues.
 }
