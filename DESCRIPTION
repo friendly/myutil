@@ -14,6 +14,7 @@ Imports:
 Suggests:
     devtools,
     glue,
+    magick,
     pkgdown,
     revdepcheck,
     spelling,
