@@ -10,5 +10,8 @@ setwd(dir)
 \item{dir}{path to new directory}
 }
 \description{
-Set Working Directory and Display in Window Title
+In Rgui, also remembers the previous directory (for \code{\link[=cd]{cd()}}) and updates
+the window title. Outside Rgui (e.g. RStudio, a terminal session), this
+is a plain passthrough to \code{base::setwd()} -- masking it is otherwise
+just noise in those environments.
 }

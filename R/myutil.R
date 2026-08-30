@@ -1,6 +1,11 @@
 # my utility functions, to be loaded by .Rprofile
 
 #' Set Working Directory and Display in Window Title
+#'
+#' In Rgui, also remembers the previous directory (for [cd()]) and updates
+#' the window title. Outside Rgui (e.g. RStudio, a terminal session), this
+#' is a plain passthrough to `base::setwd()` -- masking it is otherwise
+#' just noise in those environments.
 
 #' @param dir path to new directory
 #' @export
@@ -8,11 +13,13 @@
 #.lastdir <- getwd()
 setwd <-
      function(dir) {
-        .lastdir <<- base::setwd(dir)
         if (.Platform$GUI == "Rgui") {
-	        utils::setWindowTitle( short.path(base::getwd()) )
+          .lastdir <<- base::setwd(dir)
+          utils::setWindowTitle( short.path(base::getwd()) )
+          .lastdir
+        } else {
+          base::setwd(dir)
         }
-        .lastdir
      }
 
 #' Shorthand for setwd, remembering previous directory

@@ -1,4 +1,4 @@
-# myutil 1.8.0
+# myutil 1.9.0
 
 * First version with NEWS
 * Added `reset_par()`
