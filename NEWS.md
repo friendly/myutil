@@ -13,4 +13,9 @@
 * Reorganized README.md into categories
 * Added `update_pkgs()`, for non-interactive CRAN + Bioconductor package updates
   with logging and self-locked-DLL retry handling
+* Added `Rpackages.bib()`, for maintaining a master BibTeX file of R package
+  citations. Dropped the old per-entry CRAN-DOI-stamping step -- `citation()`
+  already supplies the correct DOI (or none) per entry as of R 4.x, and the
+  old step clobbered legitimate non-CRAN DOIs on `Book`/`Article`-type
+  citations (e.g. `citation("sf")`)
 

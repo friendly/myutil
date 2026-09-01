@@ -57,6 +57,9 @@ individually, or via `release_run_all()`.
   dataset
 - `sourceDir()` -- source all R files in a directory, e.g. to try out
   in-progress package changes without reinstalling
+- `Rpackages.bib()` -- write a BibTeX file of citations for installed
+  packages, an R project's dependencies (via `renv::dependencies()`), or
+  attached packages
 
 ## Graphics
 

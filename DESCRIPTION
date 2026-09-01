@@ -17,6 +17,7 @@ Suggests:
     glue,
     magick,
     pkgdown,
+    renv,
     revdepcheck,
     spelling,
     urlchecker
