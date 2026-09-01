@@ -107,8 +107,11 @@ Rpackages.bib <- function(
   bibs <- lapply(pkgs, function(x) try(citation(x)))
   n.installed <- length(bibs)
 
-  ## exclude those with errors
-  ok <- !(sapply(bibs, class) == "try-error")
+  ## exclude those with errors. inherits(), not class(x) == "try-error": citation()'s
+  ## return value carries class c("citation", "bibentry") (not a bare "bibentry"), which
+  ## made sapply(bibs, class) return a 2xN matrix instead of a length-N vector, silently
+  ## double-counting successes and mis-sizing the key vector built below.
+  ok <- !vapply(bibs, inherits, logical(1), what = "try-error")
   pkgs <- pkgs[ok]
   bibs <- bibs[ok]
   n.converted <- sum(ok)
