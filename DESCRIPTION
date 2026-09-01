@@ -7,6 +7,8 @@ Author: Michael Friendly
 Maintainer: Michael Friendly <friendly@yorku.ca>
 Description: A collection of my utility functions, some for Rgui, but now some for RStudio. Put in a
     package for convenience
+URL: https://friendly.github.io/myutil/, https://github.com/friendly/myutil
+BugReports: https://github.com/friendly/myutil/issues
 License: GPL-2
 Encoding: UTF-8
 Imports:

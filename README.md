@@ -1,4 +1,4 @@
-myutil
+myutil <img src="man/figures/logo.png" align="right" height="140px" alt="myutil logo" />
 ======
 
 My utility functions for R, collected here instead of being duplicated
