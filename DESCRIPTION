@@ -12,6 +12,7 @@ Encoding: UTF-8
 Imports:
     jsonlite
 Suggests:
+    BiocManager,
     devtools,
     glue,
     magick,

@@ -26,6 +26,7 @@ export(setwd)
 export(short.path)
 export(sourceDir)
 export(update_github)
+export(update_pkgs)
 export(use_data_doc)
 importFrom(devtools,install_github)
 importFrom(grDevices,

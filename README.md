@@ -23,6 +23,10 @@ to live in one place instead of being copy-pasted per package.
   packages to a file, before upgrading R
 - `restore_installed_pkgs()` -- reinstall packages from a file saved by
   `save_installed_pkgs()`, after upgrading R
+- `update_pkgs()` -- update all installed CRAN + Bioconductor packages in
+  one non-interactive run, with logging and lock-retry handling; meant to
+  be run in the background (e.g. `Rscript -e "myutil::update_pkgs()"`)
+  rather than RStudio's own (blocking) package updater
 
 ## Package release / CRAN checks
 

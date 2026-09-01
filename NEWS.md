@@ -11,4 +11,6 @@
   `release_revdep()`, `release_cran_comments()`, `release_run_all()`
 * Enabled markdown roxygen (`Roxygen: list(markdown = TRUE)`)
 * Reorganized README.md into categories
+* Added `update_pkgs()`, for non-interactive CRAN + Bioconductor package updates
+  with logging and self-locked-DLL retry handling
 
