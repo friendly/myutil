@@ -1,7 +1,8 @@
 # myutil 1.9.0
 
 * First version with NEWS
-* Added `reset_par()`
+* Added `reset_par()` (2026-09-01: was defined without `@export`/docs since first added,
+  so never actually usable as `myutil::reset_par()`; now exported and documented)
 * Added `use_data_doc()`
 * Added `save_installed_pkgs()` and `restore_installed_pkgs()`, for saving/reinstalling
   the set of installed packages across an R version upgrade

@@ -3,9 +3,25 @@
 \name{reset_par}
 \alias{reset_par}
 \title{Reset graphics parameters to default values}
+\source{
+\url{https://stackoverflow.com/questions/9292563/reset-the-graphical-parameters-back-to-default-values-without-use-of-dev-off}
+}
 \usage{
 reset_par()
 }
+\value{
+A named list of \code{par()} values, suitable for passing to \code{par()}
+}
 \description{
-Reset graphics parameters to default values
+Returns a named list of default \code{par()} values, snapshotted from a fresh graphics device --
+pass it to \code{par()} to actually reset the current device, e.g. \code{par(reset_par())}. Useful
+after a plotting function leaves \code{par()} in a state you don't want to keep (e.g. \code{mfrow},
+margins), without the side effects of \code{dev.off()}.
+}
+\examples{
+\dontrun{
+par(mfrow = c(2, 2), mar = c(0, 0, 0, 0))
+plot(1)
+par(reset_par())  # back to single-panel, default margins
+}
 }

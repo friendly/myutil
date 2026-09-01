@@ -65,6 +65,8 @@ individually, or via `release_run_all()`.
 
 - `eps()` -- `postscript()` wrapper with sensible defaults for EPS files
 - `my.par()` -- `par()` wrapper with nicer default margins/ticks
+- `reset_par()` -- default `par()` values as a named list; `par(reset_par())`
+  resets a device without `dev.off()`'s side effects
 - `rgb2col()` -- find the named R color closest to a given hex RGB color
 - `magick_collage()` -- arrange a folder (or list) of PNG/JPEG images into
   a single montage image
