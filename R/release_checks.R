@@ -49,6 +49,45 @@
 # foghorn -- post-submission CRAN check-results monitor. Not a pre-release
 # tool, but useful to know about for after this ships.
 
+#' Automate CRAN release checks for a package
+#'
+#' `release_*()` functions automate the repetitive parts of preparing an R
+#' package for a CRAN release: cross-checking DESCRIPTION/NEWS.md,
+#' rebuilding documentation and running spelling/URL checks, rebuilding the
+#' README and pkgdown site, building the tarball/vignettes/manual, running
+#' `R CMD check`, remote checks (win-builder), reverse dependency checks,
+#' and assembling `cran-comments.md`. Run them individually while iterating
+#' on a release, or run the whole non-interactive sequence at once with
+#' [release_run_all()].
+#'
+#' All of them must be run with the working directory set to the *target*
+#' package's root (the package being released), not to myutil's.
+#'
+#' Intended order:
+#' 1. [release_preflight()] -- sanity-check Version/Date/NEWS.md against CRAN
+#' 2. [release_document()], [release_spelling()] / [release_spelling_add()],
+#'    [release_urls()] -- documentation, spelling, and URL checks
+#' 3. [release_site()] -- rebuild README and pkgdown site
+#' 4. [release_build()], [release_check()] -- build tarball/vignettes/manual,
+#'    then `R CMD check --as-cran`
+#' 5. [release_check_win()] -- win-builder (R-devel); slow, so not run by
+#'    [release_run_all()] unless `full = TRUE`
+#' 6. [release_revdep()] -- reverse dependency checks; also opt-in via
+#'    `full = TRUE`
+#' 7. [release_cran_comments()] -- assemble `cran-comments.md` from the
+#'    saved [release_check()] and [release_revdep()] output
+#'
+#' What's still manual: bumping DESCRIPTION's Version/Date, writing the
+#' NEWS.md entry, and the actual `devtools::release()` submission. See the
+#' comments at the top of `release_checks.R` for why those aren't
+#' automated, and for notes on related tooling (fledge, rhub, goodpractice,
+#' foghorn, etc).
+#'
+#' @family release checks
+#' @name release_checks
+#' @rdname release_checks
+NULL
+
 # ---- 1. Pre-flight: versions & NEWS ----------------------------------------
 
 #' Cross-check a package's DESCRIPTION Version/Date against NEWS.md and CRAN
@@ -56,6 +95,7 @@
 #' Run from the root of the package being released (not from myutil).
 #'
 #' @return invisibly, a list with `package`, `version`, `date`, `cran_version`
+#' @family release checks
 #' @export
 release_preflight <- function() {
   desc <- read.dcf("DESCRIPTION", fields = c("Package", "Version", "Date"))
@@ -98,6 +138,7 @@ release_preflight <- function() {
 #' Rebuild a package's documentation
 #'
 #' @return invisible NULL
+#' @family release checks
 #' @export
 release_document <- function() {
   devtools::document()
@@ -109,6 +150,7 @@ release_document <- function() {
 #'   `spelling::update_wordlist()`? Default `FALSE`, and deliberately hard
 #'   to trigger by accident -- see Details.
 #' @return invisibly, the spelling check results
+#' @family release checks
 #' @details
 #' `spelling::update_wordlist()` doesn't add *selected* words, it replaces
 #' the entire wordlist with whatever `spell_check_package()` finds at that
@@ -147,6 +189,7 @@ release_spelling <- function(update = FALSE) {
 #'   words are genuine false positives (proper nouns, technical terms)
 #'   rather than actual typos.
 #' @return invisibly, the updated word list
+#' @family release checks
 #' @export
 release_spelling_add <- function(words) {
   wordfile <- "inst/WORDLIST"
@@ -174,6 +217,7 @@ release_spelling_add <- function(words) {
 #' @param update Rewrite URLs found to have moved? Default `FALSE`, same
 #'   reasoning as [release_spelling()].
 #' @return invisible NULL
+#' @family release checks
 #' @export
 release_urls <- function(update = FALSE) {
   urlchecker::url_check()
@@ -185,6 +229,7 @@ release_urls <- function(update = FALSE) {
 #' Rebuild a package's README and pkgdown site
 #'
 #' @return invisible NULL
+#' @family release checks
 #' @export
 release_site <- function() {
   devtools::build_readme()
@@ -201,6 +246,7 @@ release_site <- function() {
 #' `vignettes/` -- the actual source location for that vignette. We restore
 #' those from `doc/` afterward so `vignettes/` never ends up missing a file.
 #' @return invisible NULL
+#' @family release checks
 #' @export
 release_build <- function() {
   Sys.setenv(RGL_USE_NULL = TRUE) # keep rgl from popping up windows during vignettes
@@ -236,6 +282,7 @@ release_build <- function() {
 #' from real output instead of you having to transcribe it by hand.
 #'
 #' @return invisibly, the `devtools::check()` result
+#' @family release checks
 #' @export
 release_check <- function() {
   Sys.setenv(RGL_USE_NULL = TRUE) # keep rgl from popping up windows during examples
@@ -249,6 +296,7 @@ release_check <- function() {
 #' Check a package on win-builder (R-devel)
 #'
 #' @return invisible NULL
+#' @family release checks
 #' @export
 release_check_win <- function() {
   devtools::check_win_devel()
@@ -263,6 +311,7 @@ release_check_win <- function() {
 #'
 #' @param num_workers number of parallel workers to use
 #' @return invisible NULL
+#' @family release checks
 #' @export
 release_revdep <- function(num_workers = 4) {
   revdepcheck::revdep_reset()
@@ -291,6 +340,7 @@ release_revdep <- function(num_workers = 4) {
 #'   static PDF vignette that local checks don't catch). `NULL` (default)
 #'   omits the section.
 #' @return invisibly, the written file's content
+#' @family release checks
 #' @export
 release_cran_comments <- function(known_issues = NULL) {
   info <- release_preflight()
@@ -398,6 +448,7 @@ run_step <- function(name, step) {
 #'   [release_cran_comments()]?
 #' @param num_workers passed to [release_revdep()] when `full = TRUE`
 #' @return invisibly, a list of any step failures
+#' @family release checks
 #' @export
 release_run_all <- function(full = FALSE, num_workers = 4) {
   steps <- list(

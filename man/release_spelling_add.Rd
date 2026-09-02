@@ -20,3 +20,19 @@ Selective and additive, unlike \code{spelling::update_wordlist()} (see
 \code{\link[=release_spelling]{release_spelling()}}). Existing entries are kept; \code{words} is merged in,
 deduplicated, and re-sorted.
 }
+\seealso{
+Other release checks:
+\code{\link[=release_build]{release_build()}},
+\code{\link[=release_check]{release_check()}},
+\code{\link[=release_check_win]{release_check_win()}},
+\code{\link{release_checks}},
+\code{\link[=release_cran_comments]{release_cran_comments()}},
+\code{\link[=release_document]{release_document()}},
+\code{\link[=release_preflight]{release_preflight()}},
+\code{\link[=release_revdep]{release_revdep()}},
+\code{\link[=release_run_all]{release_run_all()}},
+\code{\link[=release_site]{release_site()}},
+\code{\link[=release_spelling]{release_spelling()}},
+\code{\link[=release_urls]{release_urls()}}
+}
+\concept{release checks}

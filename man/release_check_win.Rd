@@ -12,3 +12,19 @@ invisible NULL
 \description{
 Check a package on win-builder (R-devel)
 }
+\seealso{
+Other release checks:
+\code{\link[=release_build]{release_build()}},
+\code{\link[=release_check]{release_check()}},
+\code{\link{release_checks}},
+\code{\link[=release_cran_comments]{release_cran_comments()}},
+\code{\link[=release_document]{release_document()}},
+\code{\link[=release_preflight]{release_preflight()}},
+\code{\link[=release_revdep]{release_revdep()}},
+\code{\link[=release_run_all]{release_run_all()}},
+\code{\link[=release_site]{release_site()}},
+\code{\link[=release_spelling]{release_spelling()}},
+\code{\link[=release_spelling_add]{release_spelling_add()}},
+\code{\link[=release_urls]{release_urls()}}
+}
+\concept{release checks}

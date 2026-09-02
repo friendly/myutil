@@ -17,3 +17,19 @@ invisible NULL
 One-time setup if \code{urlchecker} isn't installed:
 \code{install.packages('urlchecker', repos = 'https://r-lib.r-universe.dev')}
 }
+\seealso{
+Other release checks:
+\code{\link[=release_build]{release_build()}},
+\code{\link[=release_check]{release_check()}},
+\code{\link[=release_check_win]{release_check_win()}},
+\code{\link{release_checks}},
+\code{\link[=release_cran_comments]{release_cran_comments()}},
+\code{\link[=release_document]{release_document()}},
+\code{\link[=release_preflight]{release_preflight()}},
+\code{\link[=release_revdep]{release_revdep()}},
+\code{\link[=release_run_all]{release_run_all()}},
+\code{\link[=release_site]{release_site()}},
+\code{\link[=release_spelling]{release_spelling()}},
+\code{\link[=release_spelling_add]{release_spelling_add()}}
+}
+\concept{release checks}
