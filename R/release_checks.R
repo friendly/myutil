@@ -12,15 +12,21 @@
 #
 # TODO: cran-comments.md content and the DESCRIPTION Version/Date bump are
 #       still manual -- release_run_all() just reminds you at the end.
-# TODO: devtools::release() is deliberately never called automatically --
-#       it's interactive (a series of y/n prompts) and is the actual point
-#       of submission to CRAN.
+# DECIDED (2026-09-14, during the Guerry 1.8.5 submission): the final manual
+# submission step is devtools::submit_cran(), after Michael's own review of
+# cran-comments.md/the diff, for routine releases. It's still deliberately
+# never called automatically here, same as the old devtools::release() it
+# replaces. usethis::use_release_issue() remains an optional extra step (not
+# required every time) for a release where Michael has doubts and wants a
+# GitHub issue documenting what's been done -- see below.
 #
 # ---- Related tools / prior art (researched 2026-08-11) --------------------
 #
 # devtools::release() is itself deprecated upstream (r-pkgs.org/release.html)
-# in favor of usethis::use_release_issue() + devtools::submit_cran() for the
-# actual non-interactive upload. TODO: swap our final manual step over.
+# in favor of usethis::use_release_issue() + devtools::submit_cran(). Use
+# submit_cran() as the final step for routine releases (see DECIDED note
+# above); reach for use_release_issue() first when a release has open
+# questions worth tracking/documenting in a GitHub issue.
 #
 # usethis::use_release_issue() opens a GitHub issue with a release checklist;
 # its automatable checks are ~1:1 with what's in this file (url_check,
@@ -78,10 +84,12 @@
 #'    saved [release_check()] and [release_revdep()] output
 #'
 #' What's still manual: bumping DESCRIPTION's Version/Date, writing the
-#' NEWS.md entry, and the actual `devtools::release()` submission. See the
-#' comments at the top of `release_checks.R` for why those aren't
-#' automated, and for notes on related tooling (fledge, rhub, goodpractice,
-#' foghorn, etc).
+#' NEWS.md entry, and the actual submission (`devtools::submit_cran()` after
+#' reviewing `cran-comments.md`/the diff yourself, for routine releases; or
+#' `usethis::use_release_issue()` first when a release has open questions
+#' worth documenting in a GitHub issue). See the comments at the top of
+#' `release_checks.R` for why the submission itself isn't automated, and for
+#' notes on related tooling (fledge, rhub, goodpractice, foghorn, etc).
 #'
 #' @family release checks
 #' @name release_checks
@@ -485,7 +493,8 @@ release_run_all <- function(full = FALSE, num_workers = 4) {
     cat("  2. Review the regenerated cran-comments.md\n")
   }
   cat("  3. Confirm Version/Date in DESCRIPTION and NEWS.md entry are correct\n")
-  cat("  4. devtools::release()\n")
+  cat("  4. devtools::submit_cran() -- or usethis::use_release_issue() first if this release has\n")
+  cat("     open questions worth documenting in a GitHub issue\n")
 
   invisible(failures)
 }

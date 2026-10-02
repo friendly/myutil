@@ -1,3 +1,11 @@
+# myutil 1.9.1
+
+* `update_pkgs()`: packages that stay out of date because this session has them loaded
+  (e.g., cli, glue, rlang, vctrs) are now actually updated. The old retry ran a child
+  process while this session still held their DLLs, so it always failed. Now a background
+  R process, started through WMI so that it isn't killed along with this session, waits
+  for the session to exit, then installs them and appends the results to the same log.
+
 # myutil 1.9.0
 
 * First version with NEWS

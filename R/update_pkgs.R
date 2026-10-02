@@ -3,6 +3,10 @@
 # this script in the background... let you know when it's done." Packaging
 # it as myutil::update_pkgs() means saying so doesn't require locating (or
 # copy-pasting) the raw script file first.
+#
+# DONE: ✔️ The retry for self-locked packages (cli, glue, rlang, ...) never worked: it ran a
+#       child process synchronously, while this session still held the DLLs. Now launches a
+#       detached process that waits for this session to exit, then installs them. 10/1/2026
 
 #' Update all installed R packages (CRAN + Bioconductor) in one run
 #'
@@ -24,13 +28,17 @@
 #' leaves the old version in place rather than corrupting anything, so this
 #' is safe, just incomplete.
 #'
-#' This function detects other open RStudio sessions (informational only --
-#' doesn't block anything) and, separately, automatically retries any
-#' packages still out of date after the main pass in a fresh `--vanilla`
-#' child `Rscript` process, which hasn't loaded any of them yet and so can
-#' usually finish what this session couldn't. If packages are still out of
-#' date after that retry, the lock is coming from another running R/RStudio
-#' session -- close it and re-run.
+#' Windows won't replace a DLL that *any* process has loaded, so a child
+#' process can't finish the job while this session is still running. This
+#' function detects other open RStudio sessions (informational only --
+#' doesn't block anything) and, for any packages still out of date after the
+#' main pass, launches a detached `Rscript --vanilla` process that waits for
+#' this R session to exit, then installs them and appends the results to the
+#' same log. So when run as `Rscript -e "myutil::update_pkgs()"`, the
+#' leftovers are finished a few seconds after it returns. If you call it from
+#' an interactive session, the retry waits until you close that session (up
+#' to an hour). If packages are still out of date after the retry, the lock
+#' is coming from another running R/RStudio session -- close it and re-run.
 #'
 #' @section Note on needs_compilation packages:
 #' A package sometimes has a newer *source* version on CRAN than the
@@ -127,44 +135,27 @@ update_pkgs <- function(log_dir = "C:/Dropbox/R/update-pkgs-log") {
   # Report anything that's still out of date (e.g. skipped due to a lock)
   still_old <- old.packages(checkBuilt = TRUE)
   n_still_old <- if (is.null(still_old)) 0 else nrow(still_old)
+  deferred <- FALSE
   if (n_still_old > 0) {
     cat(glue::glue(
       "\n{n_still_old} package(s) still out of date: ",
       "{paste(still_old[, 'Package'], collapse = ', ')}\n"
     ))
 
-    # These are often self-locked: THIS session (not a separate RStudio/R
-    # session) already has them loaded as dependencies of its own package
-    # tools (curl/openssl for downloads, jsonlite for repo metadata, cli/
-    # glue/rlang/magrittr for messaging), so file.copy() can't overwrite
-    # their DLLs no matter how the update was triggered -- closing RStudio
-    # doesn't help when the lock is self-inflicted like this. A brand-new
-    # --vanilla child process hasn't loaded any of them yet, so it can
-    # usually finish the copy where this session couldn't.
-    cat("\nRetrying in a fresh --vanilla child process (works around self-locked deps)...\n")
-    rscript_bin <- file.path(R.home("bin"), "Rscript.exe")
-    retry_pkgs <- still_old[, "Package"]
-    retry_expr <- glue::glue(
-      "options(repos = c(CRAN = '{getOption('repos')['CRAN']}')); ",
-      "install.packages(c({paste(sprintf('\\'%s\\'', retry_pkgs), collapse = ', ')}), type = 'win.binary')"
-    )
-    retry_result <- tryCatch(
-      system2(rscript_bin, c("--vanilla", "-e", shQuote(retry_expr)),
-              stdout = TRUE, stderr = TRUE),
-      error = function(e) glue::glue("retry failed to launch: {conditionMessage(e)}")
-    )
-    cat(paste(retry_result, collapse = "\n"), "\n")
-
-    still_old2 <- old.packages(checkBuilt = TRUE)
-    n_still_old2 <- if (is.null(still_old2)) 0 else nrow(still_old2)
-    if (n_still_old2 > 0) {
+    # These are often self-locked: THIS session already has them loaded as
+    # dependencies of its own tools (cli/glue/rlang/magrittr for messaging,
+    # jsonlite, curl, ...). Windows won't replace a DLL that ANY process has
+    # loaded, so a child process started from here can't replace them either
+    # while this session is still alive (the old synchronous retry failed for
+    # exactly this reason). Instead, launch a detached --vanilla process that
+    # waits for this session to exit, then installs them and appends the
+    # results to this log.
+    deferred <- launch_deferred_retry(still_old[, "Package"], log_file)
+    if (deferred) {
       cat(glue::glue(
-        "\n{n_still_old2} package(s) still out of date after retry (likely ",
-        "locked by another running R/RStudio session -- close it and re-run ",
-        "this function): {paste(still_old2[, 'Package'], collapse = ', ')}\n"
+        "\nThese will be installed by a background R process once this ",
+        "session exits; its results are appended to this log.\n"
       ))
-    } else {
-      cat("\nAll packages up to date after retry.\n")
     }
   } else {
     cat("\nAll packages up to date.\n")
@@ -201,7 +192,8 @@ update_pkgs <- function(log_dir = "C:/Dropbox/R/update-pkgs-log") {
     not_updated_line <- sprintf("Not updated:             %d", n_not_updated)
     if (n_not_updated > 0) {
       not_updated_line <- paste0(
-        not_updated_line, " (", paste(old[!updated_ok, "Package"], collapse = ", "), ")"
+        not_updated_line, " (", paste(old[!updated_ok, "Package"], collapse = ", "), ")",
+        if (deferred) " -- deferred retry pending, see end of log" else ""
       )
     }
     summary_lines <- c(summary_lines, not_updated_line, "================")
@@ -218,4 +210,75 @@ update_pkgs <- function(log_dir = "C:/Dropbox/R/update-pkgs-log") {
 
   cat(glue::glue("Log written to {log_file}\n"))
   invisible(log_file)
+}
+
+# Launch a detached `Rscript --vanilla` that waits for this R session (the one
+# holding the DLL locks) to exit, then installs `pkgs` and appends the results
+# to `log_file`. The script is written next to the log, not in tempdir(),
+# because this session's tempdir() is deleted when it exits. Gives up after
+# `max_wait` seconds if the session is still running (e.g. when update_pkgs()
+# was called from an interactive session that stays open).
+# Returns TRUE if the process was launched.
+launch_deferred_retry <- function(pkgs, log_file, max_wait = 3600,
+                                  repos = getOption("repos")["CRAN"]) {
+  script_file <- sub("\\.log$", "-deferred-retry.R", log_file)
+  script <- c(
+    glue::glue("pid <- {Sys.getpid()}"),
+    glue::glue("pkgs <- {paste(deparse(unname(pkgs)), collapse = '')}"),
+    glue::glue("log_file <- {deparse(log_file)}"),
+    glue::glue("max_wait <- {max_wait}"),
+    glue::glue("options(repos = c(CRAN = {deparse(unname(repos))}))"),
+    'alive <- function() {',
+    '  out <- system(paste0("tasklist /FI \\"PID eq ", pid, "\\" /NH"), intern = TRUE)',
+    '  any(grepl(paste0("\\\\b", pid, "\\\\b"), out))',
+    '}',
+    'waited <- 0',
+    'while (alive() && waited < max_wait) { Sys.sleep(2); waited <- waited + 2 }',
+    'con <- file(log_file, open = "at")',
+    'sink(con); sink(con, type = "message")',
+    'cat("\\n=== Deferred retry started", format(Sys.time()), "===\\n")',
+    'if (alive()) {',
+    '  cat("Gave up: R session", pid, "is still running after", max_wait / 60, "min.",',
+    '      "Close it and run update_pkgs() again.\\n")',
+    '} else {',
+    '  install.packages(pkgs, type = "win.binary")',
+    '  still <- intersect(pkgs, rownames(old.packages(checkBuilt = TRUE)))',
+    '  if (length(still) > 0) {',
+    '    cat("\\nStill out of date (probably locked by another R/RStudio session;",',
+    '        "close it and run update_pkgs() again):", paste(still, collapse = ", "), "\\n")',
+    '  } else {',
+    '    cat("\\nAll", length(pkgs), "deferred package(s) are now up to date.\\n")',
+    '  }',
+    '}',
+    'cat("=== Deferred retry finished", format(Sys.time()), "===\\n")',
+    'sink(type = "message"); sink(); close(con)'
+  )
+  writeLines(script, script_file)
+
+  # Start it via WMI (Win32_Process.Create), not as a child of this process:
+  # when R runs inside a Windows job object (e.g. a terminal or an AI coding
+  # tool that kills the whole process tree when the command ends), an
+  # ordinary child would be killed as soon as this session exits.
+  rscript_bin <- normalizePath(file.path(R.home("bin"), "Rscript.exe"))
+  cmdline <- paste0('"', rscript_bin, '" --vanilla "', normalizePath(script_file), '"')
+  ps <- paste0("(Invoke-CimMethod -ClassName Win32_Process -MethodName Create ",
+               "-Arguments @{CommandLine='", cmdline, "'}).ReturnValue")
+  status <- tryCatch(
+    system2("powershell", c("-NoProfile", "-Command", shQuote(ps, type = "cmd")),
+            stdout = TRUE, stderr = TRUE),
+    error = function(e) conditionMessage(e)
+  )
+  if (identical(trimws(status[length(status)]), "0")) return(TRUE)
+
+  # Fallback: an ordinary detached child (survives unless killed with this
+  # session's process tree)
+  cat(glue::glue("WMI launch failed ({paste(status, collapse = ' ')}); using a detached child process.\n"))
+  tryCatch({
+    system2(rscript_bin, c("--vanilla", shQuote(script_file, type = "cmd")),
+            wait = FALSE, invisible = TRUE)
+    TRUE
+  }, error = function(e) {
+    cat(glue::glue("Could not launch the deferred retry: {conditionMessage(e)}\n"))
+    FALSE
+  })
 }

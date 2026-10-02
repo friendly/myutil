@@ -34,10 +34,12 @@ saved \code{\link[=release_check]{release_check()}} and \code{\link[=release_rev
 }
 
 What's still manual: bumping DESCRIPTION's Version/Date, writing the
-NEWS.md entry, and the actual \code{devtools::release()} submission. See the
-comments at the top of \code{release_checks.R} for why those aren't
-automated, and for notes on related tooling (fledge, rhub, goodpractice,
-foghorn, etc).
+NEWS.md entry, and the actual submission (\code{devtools::submit_cran()} after
+reviewing \code{cran-comments.md}/the diff yourself, for routine releases; or
+\code{usethis::use_release_issue()} first when a release has open questions
+worth documenting in a GitHub issue). See the comments at the top of
+\code{release_checks.R} for why the submission itself isn't automated, and for
+notes on related tooling (fledge, rhub, goodpractice, foghorn, etc).
 }
 \seealso{
 Other release checks:

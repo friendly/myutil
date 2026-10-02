@@ -28,13 +28,17 @@ very packages it needs to run, regardless of whether RStudio is open. R
 leaves the old version in place rather than corrupting anything, so this
 is safe, just incomplete.
 
-This function detects other open RStudio sessions (informational only --
-doesn't block anything) and, separately, automatically retries any
-packages still out of date after the main pass in a fresh \code{--vanilla}
-child \code{Rscript} process, which hasn't loaded any of them yet and so can
-usually finish what this session couldn't. If packages are still out of
-date after that retry, the lock is coming from another running R/RStudio
-session -- close it and re-run.
+Windows won't replace a DLL that \emph{any} process has loaded, so a child
+process can't finish the job while this session is still running. This
+function detects other open RStudio sessions (informational only --
+doesn't block anything) and, for any packages still out of date after the
+main pass, launches a detached \code{Rscript --vanilla} process that waits for
+this R session to exit, then installs them and appends the results to the
+same log. So when run as \verb{Rscript -e "myutil::update_pkgs()"}, the
+leftovers are finished a few seconds after it returns. If you call it from
+an interactive session, the retry waits until you close that session (up
+to an hour). If packages are still out of date after the retry, the lock
+is coming from another running R/RStudio session -- close it and re-run.
 }
 
 \section{Note on needs_compilation packages}{

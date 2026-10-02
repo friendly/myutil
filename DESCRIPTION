@@ -1,8 +1,8 @@
 Package: myutil
 Type: Package
 Title: My utility functions
-Version: 1.9.0
-Date: 2026-08-29
+Version: 1.9.1
+Date: 2026-10-01
 Author: Michael Friendly
 Maintainer: Michael Friendly <friendly@yorku.ca>
 Description: A collection of my utility functions, some for Rgui, but now some for RStudio. Put in a
