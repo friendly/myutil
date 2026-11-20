@@ -17,6 +17,7 @@
 #' @param log_dir directory to write the run's log file to
 #' @return the log file path, invisibly
 #' @export
+#' @importFrom utils available.packages old.packages update.packages
 #' @section Windows note on file locks:
 #' A package can't be overwritten on disk while its DLL is loaded into a
 #' running R process. This can be a *separate* RStudio/R session holding the

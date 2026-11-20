@@ -81,6 +81,7 @@
 #'
 #' @return Returns invisibly an object of class `"bibentry"`
 #' @export
+#' @importFrom utils citation toLatex sessionInfo toBibtex
 #' @examples
 #' \dontrun{
 #' Rpackages.bib()  # all installed packages, written to the usual localtexmf location

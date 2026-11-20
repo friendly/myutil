@@ -22,7 +22,6 @@
 dropbox_folder <- function() {
 
   if (Sys.info()["sysname"]!="Windows") stop("Currently, 'dropbox_folder' works for Windows only. Sorry.")
- 	if (!require(jsonlite, quietly=TRUE)) stop ("You need to install the jsonlite package.")
 
 	file_name<-list.files(paste(Sys.getenv(x = "APPDATA"),"Dropbox", sep="/"), 
 	                      pattern = "info*.json", full.names = TRUE)

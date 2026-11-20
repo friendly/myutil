@@ -24,6 +24,6 @@ a data frame, with columns Type, Size, Rows, Columns. Object names are the row n
 }
 \examples{
 ls.objects()
-ls.objects(pattern="*lm")
+ls.objects(pattern="lm$")
 ls.objects(order.by="Type")
 }

@@ -1,5 +1,9 @@
 # my utility functions, to be loaded by .Rprofile
 
+# previous directory, for cd(); kept here rather than in the user's workspace
+.myutil_state <- new.env(parent = emptyenv())
+
+
 #' Set Working Directory and Display in Window Title
 #'
 #' In Rgui, also remembers the previous directory (for [cd()]) and updates
@@ -10,13 +14,12 @@
 #' @param dir path to new directory
 #' @export
 
-#.lastdir <- getwd()
 setwd <-
      function(dir) {
         if (.Platform$GUI == "Rgui") {
-          .lastdir <<- base::setwd(dir)
+          .myutil_state$lastdir <- base::setwd(dir)
           utils::setWindowTitle( short.path(base::getwd()) )
-          .lastdir
+          .myutil_state$lastdir
         } else {
           base::setwd(dir)
         }
@@ -36,8 +39,11 @@ setwd <-
 #' 
 
   cd <- function(dir) {
-  	if(missing(dir)) dir <- .lastdir
-    .lastdir <<- base::setwd(dir)
+  	if (missing(dir)) {
+  	  dir <- .myutil_state$lastdir
+  	  if (is.null(dir)) stop("no previous directory to return to")
+  	}
+    .myutil_state$lastdir <- base::setwd(dir)
     if (.Platform$GUI == "Rgui") {
 	    utils::setWindowTitle( short.path(base::getwd()) )
     }

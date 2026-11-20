@@ -19,6 +19,14 @@
   packages already installed. Files saved by earlier versions still work (CRAN only).
 * `update_github()` uses `remotes::install_github()`; it imported `devtools::install_github()`,
   although devtools is only suggested, which made `R CMD check` fail.
+* Fixes so that `R CMD check` is clean (0/0/0):
+    - `ls.objects()` failed when there were no objects (as in a clean session); the example
+      `pattern = "*lm"` was not a valid regular expression.
+    - `setwd()`/`cd()` kept the previous directory in `.lastdir` in the user's workspace; it is
+      now kept inside the package.
+    - `dropbox_folder()` no longer calls `require(jsonlite)` (it is imported).
+    - Declared the `utils` functions used by `Rpackages.bib()`, `update_pkgs()` and
+      `use_data_doc()`; `.Rbuildignore` covers the pkgdown files; Description is a sentence.
 
 # myutil 1.9.2
 

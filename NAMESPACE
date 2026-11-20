@@ -42,7 +42,15 @@ importFrom(grDevices,
 importFrom(graphics,par)
 importFrom(jsonlite,fromJSON)
 importFrom(utils,
+  available.packages,
   browseURL,
+  citation,
   installed.packages,
-  object.size
+  object.size,
+  old.packages,
+  sessionInfo,
+  str,
+  toBibtex,
+  toLatex,
+  update.packages
 )

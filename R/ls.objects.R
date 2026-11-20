@@ -19,7 +19,7 @@
 #'
 #' @examples
 #' ls.objects()
-#' ls.objects(pattern="*lm")
+#' ls.objects(pattern="lm$")
 #' ls.objects(order.by="Type")
 
 ls.objects <- function (pos = 1, pattern, order.by)
@@ -27,11 +27,17 @@ ls.objects <- function (pos = 1, pattern, order.by)
     napply <- function(names, fn) sapply(names, function(x) fn(get(x,
         pos = pos)))
     names <- ls(pos = pos, pattern = pattern)
+    if (!length(names))
+        return(data.frame(Type = character(), Size = numeric(), Rows = numeric(),
+                          Columns = numeric()))
     obj.class <- napply(names, function(x) as.character(class(x))[1])
     obj.mode <- napply(names, mode)
     obj.type <- ifelse(is.na(obj.class), obj.mode, obj.class)
     obj.size <- napply(names, object.size)
-    obj.dim <- t(napply(names, function(x) as.numeric(dim(x))[1:2]))
+    obj.dim <- t(vapply(names, function(x) {
+        d <- dim(get(x, pos = pos))
+        if (is.null(d)) c(NA_real_, NA_real_) else as.numeric(d)[1:2]
+    }, numeric(2)))
     vec <- is.na(obj.dim)[, 1] & (obj.type != "function")
     obj.dim[vec, 1] <- napply(names, length)[vec]
     out <- data.frame(obj.type, obj.size, obj.dim)
