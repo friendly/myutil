@@ -48,8 +48,24 @@
 #' different DOIs already present on `Book`/`Article`-type citations (e.g. `citation("sf")` has
 #' two entries, each with its own real DOI -- a book DOI and an R Journal article DOI -- neither
 #' of which is a CRAN package DOI) and fabricated one for packages with no DOI at all (e.g.
-#' `citation("MASS")`, a book citation). That step has been removed; `citation()`'s own output
-#' is used as-is.
+#' `citation("MASS")`, a book citation). That step has been removed.
+#'
+#' What remains is a narrow gap: `citation()` only auto-fills the CRAN DOI when a package has
+#' *no* `inst/CITATION`. Many packages' own CITATION files contain a `Manual` entry for the
+#' package itself but omit the DOI (e.g. `cluster`, `survival`, `knitr`, `psych`). With
+#' `add.pkg.doi = TRUE` (the default) the DOI `10.32614/CRAN.package.<pkg>` is added to such an
+#' entry, but only when all of the following hold:
+#'
+#' - the entry has no DOI already (existing DOIs are never changed);
+#' - its BibTeX type is `Manual` (never `Book`, `Article`, etc.);
+#' - the installed package's DESCRIPTION says `Repository: CRAN` (so GitHub, r-universe,
+#'   Bioconductor and locally built packages are left alone);
+#' - the entry is recognizably the package's own manual: its title starts with the package
+#'   name, or names it as an R package, or its URL is the package's CRAN page and its note
+#'   says "R package"; and it is not a vignette, guide or tutorial.
+#'
+#' This deliberately rejects e.g. `mlbench`'s entry for the UCI repository, `nloptr`'s entry
+#' for the NLopt C library, and `VGAMdata`'s entry citing `VGAM`.
 #'
 #' @param packages One of `c("installed", "dependencies", "attached")` or a character vector
 #'   of package names.
@@ -59,6 +75,8 @@
 #' @param header logical; if `TRUE`, include a header of LaTeX comments in the output file
 #' @param preamble A character string consisting of a preamble for the BibTeX file
 #' @param suppress.warnings logical; suppress warnings from `citation()`
+#' @param add.pkg.doi logical; add the CRAN package DOI to `Manual` entries for CRAN packages
+#'   whose own `inst/CITATION` omits it? See Details for the safeguards.
 #' @param verbose logical; print messages to the console?
 #'
 #' @return Returns invisibly an object of class `"bibentry"`
@@ -74,6 +92,7 @@ Rpackages.bib <- function(
     header = TRUE,
     preamble = NULL,
     suppress.warnings = TRUE,
+    add.pkg.doi = TRUE,
     verbose = TRUE)
 {
   ## query packages and their bibentries
@@ -129,11 +148,27 @@ Rpackages.bib <- function(
                      paste0(key.prefix, pkgs[i]))
   bibs$key <- as.list(unlist(bibkeys))
 
-  ## DOIs are NOT added here -- citation() already supplies the correct one for each bibentry
-  ## (a CRAN/Bioconductor package DOI for an auto-generated @Manual entry, whatever DOI the
-  ## package's own inst/CITATION specifies for a Book/Article entry, or none at all). See
-  ## @details above for why the previous version of this function, which stamped a CRAN-package
-  ## DOI onto every entry uniformly, was actively wrong for non-Manual citations.
+  ## citation() already supplies the correct DOI for auto-generated entries and for whatever
+  ## an inst/CITATION file specifies. Optionally fill in the CRAN package DOI, but ONLY on
+  ## entries that are demonstrably the package's own manual -- see .is_pkg_manual() and
+  ## @details. Never overwrite an existing DOI.
+  if (add.pkg.doi) {
+    bibpkg <- rep(pkgs, nref)
+    ip <- installed.packages(fields = "Repository")
+    cran <- rownames(ip)[!is.na(ip[, "Repository"]) & ip[, "Repository"] == "CRAN"]
+    dois <- bibs$doi
+    added <- character(0)
+    for (i in seq_along(bibs)) {
+      p <- bibpkg[i]
+      if (!is.null(dois[[i]]) || !(p %in% cran)) next
+      if (!.is_pkg_manual(bibs[i], p)) next
+      dois[[i]] <- paste0("10.32614/CRAN.package.", p)
+      added <- c(added, bibs$key[[i]])
+    }
+    if (length(added)) bibs$doi <- dois
+    if (verbose) cat("Added CRAN package DOIs to", length(added), "@Manual entries",
+                     if (length(added)) paste0(":\n  ", paste(added, collapse = ", ")), "\n")
+  }
 
   # make page numbers proper: fix from (\d+)-(\d+) to $1--$2
   # this doesn't quite work-- it screws up the structure of the bibs object
@@ -161,4 +196,35 @@ Rpackages.bib <- function(
 
   ## return Bibtex items invisibly
   invisible(bibs)
+}
+
+## Is bibentry `e` (length 1) the @Manual entry for package `pkg` itself, as opposed to a
+## vignette, the manual of some other software, or another package's manual? Deliberately
+## conservative: a false negative just leaves a DOI out, a false positive fabricates one.
+.is_pkg_manual <- function(e, pkg) {
+  if (tolower(attr(unclass(e)[[1]], "bibtype")) != "manual") return(FALSE)
+  clean <- function(x) {
+    x <- paste(x, collapse = " ")
+    x <- gsub("\\\\[A-Za-z]+", " ", x)          # drop LaTeX commands like \texttt
+    x <- gsub("[{}'\"`]", "", x)                # braces and quotes
+    trimws(gsub("[[:space:]]+", " ", x))
+  }
+  title <- clean(e$title)
+  note  <- clean(e$note)
+  url   <- paste(e$url, collapse = " ")
+  # vignettes / tutorials / guides are documents *about* the package, not the package
+  if (grepl("vignette", paste(title, note), ignore.case = TRUE) ||
+      grepl("^(an? |the )?(guide|introduc|tutorial)|\\b(examples|tutorial)$", title,
+            ignore.case = TRUE, perl = TRUE))
+    return(FALSE)
+  p <- gsub(".", "\\.", pkg, fixed = TRUE)
+  word <- paste0("(^|[^A-Za-z0-9.])", p, "([^A-Za-z0-9.]|$)")
+  # (a) title starts with the package name: "pkg: Title", "pkg---Title"
+  if (grepl(paste0("^", p, "([^A-Za-z0-9.]|$)"), title, ignore.case = TRUE)) return(TRUE)
+  # (b) title names it as an R package: "R package 'corrplot': ...", "The R package sm: ..."
+  if (grepl("package", title, ignore.case = TRUE) && grepl(word, title)) return(TRUE)
+  # (c) the URL is this package's CRAN page and the note says it is an R package
+  if (grepl(paste0("package=", p, "([^A-Za-z0-9.]|$)"), url) &&
+      grepl("R package", note, ignore.case = TRUE)) return(TRUE)
+  FALSE
 }

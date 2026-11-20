@@ -12,6 +12,7 @@ Rpackages.bib(
   header = TRUE,
   preamble = NULL,
   suppress.warnings = TRUE,
+  add.pkg.doi = TRUE,
   verbose = TRUE
 )
 }
@@ -29,6 +30,9 @@ master-bib location this is normally saved to, under a version-specific filename
 \item{preamble}{A character string consisting of a preamble for the BibTeX file}
 
 \item{suppress.warnings}{logical; suppress warnings from \code{citation()}}
+
+\item{add.pkg.doi}{logical; add the CRAN package DOI to \code{Manual} entries for CRAN packages
+whose own \code{inst/CITATION} omits it? See Details for the safeguards.}
 
 \item{verbose}{logical; print messages to the console?}
 }
@@ -81,8 +85,25 @@ at all. This function used to add a DOI itself, stamping the same CRAN-package D
 different DOIs already present on \code{Book}/\code{Article}-type citations (e.g. \code{citation("sf")} has
 two entries, each with its own real DOI -- a book DOI and an R Journal article DOI -- neither
 of which is a CRAN package DOI) and fabricated one for packages with no DOI at all (e.g.
-\code{citation("MASS")}, a book citation). That step has been removed; \code{citation()}'s own output
-is used as-is.
+\code{citation("MASS")}, a book citation). That step has been removed.
+
+What remains is a narrow gap: \code{citation()} only auto-fills the CRAN DOI when a package has
+\emph{no} \code{inst/CITATION}. Many packages' own CITATION files contain a \code{Manual} entry for the
+package itself but omit the DOI (e.g. \code{cluster}, \code{survival}, \code{knitr}, \code{psych}). With
+\code{add.pkg.doi = TRUE} (the default) the DOI \verb{10.32614/CRAN.package.<pkg>} is added to such an
+entry, but only when all of the following hold:
+\itemize{
+\item the entry has no DOI already (existing DOIs are never changed);
+\item its BibTeX type is \code{Manual} (never \code{Book}, \code{Article}, etc.);
+\item the installed package's DESCRIPTION says \code{Repository: CRAN} (so GitHub, r-universe,
+Bioconductor and locally built packages are left alone);
+\item the entry is recognizably the package's own manual: its title starts with the package
+name, or names it as an R package, or its URL is the package's CRAN page and its note
+says "R package"; and it is not a vignette, guide or tutorial.
+}
+
+This deliberately rejects e.g. \code{mlbench}'s entry for the UCI repository, \code{nloptr}'s entry
+for the NLopt C library, and \code{VGAMdata}'s entry citing \code{VGAM}.
 }
 \examples{
 \dontrun{

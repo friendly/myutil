@@ -1,7 +1,7 @@
 Package: myutil
 Type: Package
 Title: My utility functions
-Version: 1.9.1
+Version: 1.9.2
 Date: 2026-10-01
 Author: Michael Friendly
 Maintainer: Michael Friendly <friendly@yorku.ca>
@@ -24,4 +24,4 @@ Suggests:
     spelling,
     urlchecker
 Roxygen: list(markdown = TRUE)
-Config/roxygen2/version: 8.1.0
+Config/roxygen2/version: 8.1.1

@@ -1,3 +1,10 @@
+# myutil 1.9.2
+
+* `Rpackages.bib()` gains `add.pkg.doi = TRUE`: fills in the CRAN package DOI
+  (`10.32614/CRAN.package.<pkg>`) on a package's own `@Manual` entry when its `inst/CITATION`
+  omits it. Restricted to CRAN-installed packages, `Manual` entries recognizably about the
+  package itself (not vignettes or other software), and entries with no existing DOI.
+
 # myutil 1.9.1
 
 * `update_pkgs()`: packages that stay out of date because this session has them loaded
