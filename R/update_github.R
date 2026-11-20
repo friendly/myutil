@@ -6,27 +6,18 @@
 #' @return none
 #' @author From: https://stackoverflow.com/questions/32538052/update-all-packages-from-github
 #' @export
-#' @importFrom utils installed.packages packageDescription
-#' @importFrom devtools install_github
+#' @importFrom utils installed.packages
+#' @seealso [installed_pkg_sources()], which also lists GitHub packages
 
 update_github <- function() {
-  # check/load necessary packages
-  # devtools package
-  if (!("package:devtools" %in% search())) {
-    tryCatch(require(devtools), error = function(x) {warning(x); cat("Cannot load devtools package \n")})
-    on.exit(detach("package:devtools", unload=TRUE))
+  if (!requireNamespace("remotes", quietly = TRUE))
+    stop("update_github() needs the remotes package: install.packages(\"remotes\")")
+  src <- installed_pkg_sources()
+  gh <- src[src$source == "github", ]
+  print(gh$Package)
+  for (i in seq_len(nrow(gh))) {
+    message("Updating ", gh$Package[i], " from GitHub (", gh$spec[i], ") ...")
+    remotes::install_github(gh$spec[i])
   }
-
-  pkgs <- installed.packages(fields = "RemoteType")
-  github_pkgs <- pkgs[pkgs[, "RemoteType"] %in% "github", "Package"]
-
-  print(github_pkgs)
-  lapply(github_pkgs, function(pac) {
-    message("Updating ", pac, " from GitHub...")
-
-    repo = packageDescription(pac, fields = "GithubRepo")
-    username = packageDescription(pac, fields = "GithubUsername")
-
-    install_github(repo = paste0(username, "/", repo))
-  })
+  invisible(gh$Package)
 }

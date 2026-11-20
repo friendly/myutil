@@ -1,3 +1,25 @@
+# myutil 1.10.0
+
+* New `upgrade_r_library()`, run in a newly installed R to bring over the packages installed
+  under an older one. For a patch upgrade (same `x.y`) it copies the package folders, so packages
+  from GitHub, r-universe, R-Forge and local files come along without reinstalling; for a minor
+  upgrade it reinstalls each package from where it came from. Packages the new R already has are
+  left alone; `translations` and packages built under R < 4.0 are skipped; packages installed
+  from local files are listed. With `check = TRUE` (default), the packages brought over are
+  test-loaded in fresh R processes, in batches; `dry_run = TRUE` shows the plan.
+* New `installed_pkg_sources()`: classifies installed packages by where they came from (CRAN,
+  another repository such as an r-universe, R-Forge, Bioconductor, GitHub/GitLab/Bitbucket, local),
+  from the `Repository` and `Remote*` fields in their `DESCRIPTION`.
+* New `outdated_pkgs()`: packages whose *version* on CRAN is newer than the installed one.
+  `old.packages()` can flag hundreds of packages whose version hasn't changed (e.g., right
+  after an R upgrade), which `update.packages()` then reinstalls for nothing. Also shows the newest
+  binary version and marks packages whose newer version is so far only available as source.
+* `save_installed_pkgs()` also saves `pkginfo`, the output of `installed_pkg_sources()`, and
+  `restore_installed_pkgs()` uses it to reinstall each package from where it came from, skipping
+  packages already installed. Files saved by earlier versions still work (CRAN only).
+* `update_github()` uses `remotes::install_github()`; it imported `devtools::install_github()`,
+  although devtools is only suggested, which made `R CMD check` fail.
+
 # myutil 1.9.2
 
 * `Rpackages.bib()` gains `add.pkg.doi = TRUE`: fills in the CRAN package DOI

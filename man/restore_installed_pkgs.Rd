@@ -22,11 +22,18 @@ Reinstalls packages previously saved by \code{\link[=save_installed_pkgs]{save_i
 typically run after upgrading to a new R version, to restore the
 packages that were installed under the old one.
 }
+\details{
+If the file was saved by myutil >= 1.10.0, each package is reinstalled from
+where it came from (see \code{\link[=installed_pkg_sources]{installed_pkg_sources()}}); packages already
+installed are skipped, and packages installed from local files, built under
+R < 4.0, or not installable (\code{translations}) are listed instead. Files from
+older versions hold only package names, which are installed from CRAN.
+}
 \examples{
 \dontrun{
 restore_installed_pkgs()
 }
 }
 \seealso{
-\code{\link[=save_installed_pkgs]{save_installed_pkgs()}}
+\code{\link[=save_installed_pkgs]{save_installed_pkgs()}}, \code{\link[=upgrade_r_library]{upgrade_r_library()}}
 }

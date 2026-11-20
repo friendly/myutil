@@ -15,6 +15,9 @@ Update installed Github packages
 \details{
 Find the local packages that were installed from Github and update them
 }
+\seealso{
+\code{\link[=installed_pkg_sources]{installed_pkg_sources()}}, which also lists GitHub packages
+}
 \author{
 From: https://stackoverflow.com/questions/32538052/update-all-packages-from-github
 }

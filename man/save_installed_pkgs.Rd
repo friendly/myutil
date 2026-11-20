@@ -20,11 +20,18 @@ Saves the names of currently installed (non-base) packages to a file, so
 they can be reinstalled later with \code{\link[=restore_installed_pkgs]{restore_installed_pkgs()}} --
 typically run just before upgrading to a new R version.
 }
+\details{
+Since myutil 1.10.0 the file also holds \code{pkginfo}, the output of
+\code{\link[=installed_pkg_sources]{installed_pkg_sources()}}, recording where each package came from (CRAN,
+GitHub, r-universe, ...), so that \code{\link[=restore_installed_pkgs]{restore_installed_pkgs()}} can reinstall
+packages that are not on CRAN too. For a patch upgrade of R (e.g., 4.6.1 to
+4.6.2), \code{\link[=upgrade_r_library]{upgrade_r_library()}} is simpler: it copies the packages directly.
+}
 \examples{
 \dontrun{
 save_installed_pkgs()
 }
 }
 \seealso{
-\code{\link[=restore_installed_pkgs]{restore_installed_pkgs()}}
+\code{\link[=restore_installed_pkgs]{restore_installed_pkgs()}}, \code{\link[=upgrade_r_library]{upgrade_r_library()}}
 }
