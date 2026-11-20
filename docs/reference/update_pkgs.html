@@ -9,7 +9,7 @@ Tools &amp;gt; Check for Package Updates, which is slow and blocks the GUI."><me
 
     <a class="navbar-brand me-2" href="../index.html">myutil</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.9.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.10.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -69,13 +69,17 @@ package-management machinery depends on things like curl/openssl
 very packages it needs to run, regardless of whether RStudio is open. R
 leaves the old version in place rather than corrupting anything, so this
 is safe, just incomplete.</p>
-<p>This function detects other open RStudio sessions (informational only –
-doesn't block anything) and, separately, automatically retries any
-packages still out of date after the main pass in a fresh <code>--vanilla</code>
-child <code>Rscript</code> process, which hasn't loaded any of them yet and so can
-usually finish what this session couldn't. If packages are still out of
-date after that retry, the lock is coming from another running R/RStudio
-session – close it and re-run.</p>
+<p>Windows won't replace a DLL that <em>any</em> process has loaded, so a child
+process can't finish the job while this session is still running. This
+function detects other open RStudio sessions (informational only –
+doesn't block anything) and, for any packages still out of date after the
+main pass, launches a detached <code>Rscript --vanilla</code> process that waits for
+this R session to exit, then installs them and appends the results to the
+same log. So when run as <code>Rscript -e "myutil::update_pkgs()"</code>, the
+leftovers are finished a few seconds after it returns. If you call it from
+an interactive session, the retry waits until you close that session (up
+to an hour). If packages are still out of date after the retry, the lock
+is coming from another running R/RStudio session – close it and re-run.</p>
     </div>
     <div class="section level2">
     <h2 id="note-on-needs-compilation-packages">Note on needs_compilation packages<a class="anchor" aria-label="anchor" href="#note-on-needs-compilation-packages"></a></h2>

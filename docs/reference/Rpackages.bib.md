@@ -14,6 +14,7 @@ Rpackages.bib(
   header = TRUE,
   preamble = NULL,
   suppress.warnings = TRUE,
+  add.pkg.doi = TRUE,
   verbose = TRUE
 )
 ```
@@ -48,6 +49,12 @@ Rpackages.bib(
 
   logical; suppress warnings from
   [`citation()`](https://rdrr.io/r/utils/citation.html)
+
+- add.pkg.doi:
+
+  logical; add the CRAN package DOI to `Manual` entries for CRAN
+  packages whose own `inst/CITATION` omits it? See Details for the
+  safeguards.
 
 - verbose:
 
@@ -116,9 +123,32 @@ different DOIs already present on `Book`/`Article`-type citations (e.g.
 `citation("sf")` has two entries, each with its own real DOI – a book
 DOI and an R Journal article DOI – neither of which is a CRAN package
 DOI) and fabricated one for packages with no DOI at all (e.g.
-`citation("MASS")`, a book citation). That step has been removed;
-[`citation()`](https://rdrr.io/r/utils/citation.html)'s own output is
-used as-is.
+`citation("MASS")`, a book citation). That step has been removed.
+
+What remains is a narrow gap:
+[`citation()`](https://rdrr.io/r/utils/citation.html) only auto-fills
+the CRAN DOI when a package has *no* `inst/CITATION`. Many packages' own
+CITATION files contain a `Manual` entry for the package itself but omit
+the DOI (e.g. `cluster`, `survival`, `knitr`, `psych`). With
+`add.pkg.doi = TRUE` (the default) the DOI `10.32614/CRAN.package.<pkg>`
+is added to such an entry, but only when all of the following hold:
+
+- the entry has no DOI already (existing DOIs are never changed);
+
+- its BibTeX type is `Manual` (never `Book`, `Article`, etc.);
+
+- the installed package's DESCRIPTION says `Repository: CRAN` (so
+  GitHub, r-universe, Bioconductor and locally built packages are left
+  alone);
+
+- the entry is recognizably the package's own manual: its title starts
+  with the package name, or names it as an R package, or its URL is the
+  package's CRAN page and its note says "R package"; and it is not a
+  vignette, guide or tutorial.
+
+This deliberately rejects e.g. `mlbench`'s entry for the UCI repository,
+`nloptr`'s entry for the NLopt C library, and `VGAMdata`'s entry citing
+`VGAM`.
 
 ## Examples
 

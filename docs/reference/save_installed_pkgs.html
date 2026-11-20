@@ -11,7 +11,7 @@ typically run just before upgrading to a new R version."><meta property="og:imag
 
     <a class="navbar-brand me-2" href="../index.html">myutil</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.9.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.10.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -63,8 +63,16 @@ under <code><a href="https://rdrr.io/r/tools/userdir.html" class="external-link"
     <p>the character vector of package names, invisibly</p>
     </div>
     <div class="section level2">
+    <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
+    <p>Since myutil 1.10.0 the file also holds <code>pkginfo</code>, the output of
+<code><a href="installed_pkg_sources.html">installed_pkg_sources()</a></code>, recording where each package came from (CRAN,
+GitHub, r-universe, ...), so that <code><a href="restore_installed_pkgs.html">restore_installed_pkgs()</a></code> can reinstall
+packages that are not on CRAN too. For a patch upgrade of R (e.g., 4.6.1 to
+4.6.2), <code><a href="upgrade_r_library.html">upgrade_r_library()</a></code> is simpler: it copies the packages directly.</p>
+    </div>
+    <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
-    <div class="dont-index"><p><code><a href="restore_installed_pkgs.html">restore_installed_pkgs()</a></code></p></div>
+    <div class="dont-index"><p><code><a href="restore_installed_pkgs.html">restore_installed_pkgs()</a></code>, <code><a href="upgrade_r_library.html">upgrade_r_library()</a></code></p></div>
     </div>
 
     <div class="section level2">

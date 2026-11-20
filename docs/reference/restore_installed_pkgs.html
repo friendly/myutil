@@ -11,7 +11,7 @@ packages that were installed under the old one."><meta property="og:image" conte
 
     <a class="navbar-brand me-2" href="../index.html">myutil</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.9.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.10.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -67,8 +67,16 @@ packages that were installed under the old one.</p>
     <p>the character vector of package names, invisibly</p>
     </div>
     <div class="section level2">
+    <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
+    <p>If the file was saved by myutil &gt;= 1.10.0, each package is reinstalled from
+where it came from (see <code><a href="installed_pkg_sources.html">installed_pkg_sources()</a></code>); packages already
+installed are skipped, and packages installed from local files, built under
+R &lt; 4.0, or not installable (<code>translations</code>) are listed instead. Files from
+older versions hold only package names, which are installed from CRAN.</p>
+    </div>
+    <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
-    <div class="dont-index"><p><code><a href="save_installed_pkgs.html">save_installed_pkgs()</a></code></p></div>
+    <div class="dont-index"><p><code><a href="save_installed_pkgs.html">save_installed_pkgs()</a></code>, <code><a href="upgrade_r_library.html">upgrade_r_library()</a></code></p></div>
     </div>
 
     <div class="section level2">

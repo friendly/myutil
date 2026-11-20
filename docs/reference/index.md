@@ -17,6 +17,9 @@
   Specialized version of postscript for eps files `eps` simply calls
   `postscript` with sensible defaults
 
+- [`installed_pkg_sources()`](https://friendly.github.io/myutil/reference/installed_pkg_sources.md)
+  : Where each installed package came from
+
 - [`ls.objects()`](https://friendly.github.io/myutil/reference/ls.objects.md)
   : ls with added information on objects
 
@@ -37,6 +40,9 @@
   [`myutil`](https://friendly.github.io/myutil/reference/myutil-package.md)
   : My R Utility Functions for Rgui
 
+- [`outdated_pkgs()`](https://friendly.github.io/myutil/reference/outdated_pkgs.md)
+  : Installed packages with newer versions available
+
 - [`release_build()`](https://friendly.github.io/myutil/reference/release_build.md)
   : Build a package's tarball, vignettes, and manual
 
@@ -44,6 +50,9 @@
   :
 
   Run `R CMD check --as-cran` locally
+
+- [`release_checks`](https://friendly.github.io/myutil/reference/release_checks.md)
+  : Automate CRAN release checks for a package
 
 - [`release_check_win()`](https://friendly.github.io/myutil/reference/release_check_win.md)
   : Check a package on win-builder (R-devel)
@@ -118,6 +127,9 @@
 
 - [`update_pkgs()`](https://friendly.github.io/myutil/reference/update_pkgs.md)
   : Update all installed R packages (CRAN + Bioconductor) in one run
+
+- [`upgrade_r_library()`](https://friendly.github.io/myutil/reference/upgrade_r_library.md)
+  : Carry an R package library over to a new version of R
 
 - [`use_data_doc()`](https://friendly.github.io/myutil/reference/use_data_doc.md)
   : Generate Outline Documentation for a Data Set in Roxygen Format

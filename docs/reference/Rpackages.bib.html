@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">myutil</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.9.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.10.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -46,6 +46,7 @@
 <span>  header <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  preamble <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  suppress.warnings <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  add.pkg.doi <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  verbose <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -78,6 +79,11 @@ master-bib location this is normally saved to, under a version-specific filename
 
 <dt id="arg-suppress-warnings">suppress.warnings<a class="anchor" aria-label="anchor" href="#arg-suppress-warnings"></a></dt>
 <dd><p>logical; suppress warnings from <code><a href="https://rdrr.io/r/utils/citation.html" class="external-link">citation()</a></code></p></dd>
+
+
+<dt id="arg-add-pkg-doi">add.pkg.doi<a class="anchor" aria-label="anchor" href="#arg-add-pkg-doi"></a></dt>
+<dd><p>logical; add the CRAN package DOI to <code>Manual</code> entries for CRAN packages
+whose own <code>inst/CITATION</code> omits it? See Details for the safeguards.</p></dd>
 
 
 <dt id="arg-verbose">verbose<a class="anchor" aria-label="anchor" href="#arg-verbose"></a></dt>
@@ -124,8 +130,20 @@ at all. This function used to add a DOI itself, stamping the same CRAN-package D
 different DOIs already present on <code>Book</code>/<code>Article</code>-type citations (e.g. <code>citation("sf")</code> has
 two entries, each with its own real DOI – a book DOI and an R Journal article DOI – neither
 of which is a CRAN package DOI) and fabricated one for packages with no DOI at all (e.g.
-<code>citation("MASS")</code>, a book citation). That step has been removed; <code><a href="https://rdrr.io/r/utils/citation.html" class="external-link">citation()</a></code>'s own output
-is used as-is.</p>
+<code>citation("MASS")</code>, a book citation). That step has been removed.</p>
+<p>What remains is a narrow gap: <code><a href="https://rdrr.io/r/utils/citation.html" class="external-link">citation()</a></code> only auto-fills the CRAN DOI when a package has
+<em>no</em> <code>inst/CITATION</code>. Many packages' own CITATION files contain a <code>Manual</code> entry for the
+package itself but omit the DOI (e.g. <code>cluster</code>, <code>survival</code>, <code>knitr</code>, <code>psych</code>). With
+<code>add.pkg.doi = TRUE</code> (the default) the DOI <code>10.32614/CRAN.package.&lt;pkg&gt;</code> is added to such an
+entry, but only when all of the following hold:</p><ul><li><p>the entry has no DOI already (existing DOIs are never changed);</p></li>
+<li><p>its BibTeX type is <code>Manual</code> (never <code>Book</code>, <code>Article</code>, etc.);</p></li>
+<li><p>the installed package's DESCRIPTION says <code>Repository: CRAN</code> (so GitHub, r-universe,
+Bioconductor and locally built packages are left alone);</p></li>
+<li><p>the entry is recognizably the package's own manual: its title starts with the package
+name, or names it as an R package, or its URL is the package's CRAN page and its note
+says "R package"; and it is not a vignette, guide or tutorial.</p></li>
+</ul><p>This deliberately rejects e.g. <code>mlbench</code>'s entry for the UCI repository, <code>nloptr</code>'s entry
+for the NLopt C library, and <code>VGAMdata</code>'s entry citing <code>VGAM</code>.</p>
     </div>
 
     <div class="section level2">

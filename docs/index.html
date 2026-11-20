@@ -19,8 +19,8 @@
 <link href="deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="My utility functions">
-<meta name="description" content="A collection of my utility functions, some for Rgui, but now some for RStudio. Put in a package for convenience">
-<meta property="og:description" content="A collection of my utility functions, some for Rgui, but now some for RStudio. Put in a package for convenience">
+<meta name="description" content="A collection of my utility functions, some for Rgui, but now some for RStudio. Put in a package for convenience.">
+<meta property="og:description" content="A collection of my utility functions, some for Rgui, but now some for RStudio. Put in a package for convenience.">
 <meta property="og:image" content="https://friendly.github.io/myutil/logo.png">
 </head>
 <body>
@@ -31,7 +31,7 @@
 
     <a class="navbar-brand me-2" href="index.html">myutil</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.9.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.10.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -87,6 +87,12 @@
 <code><a href="reference/restore_installed_pkgs.html">restore_installed_pkgs()</a></code> – reinstall packages from a file saved by <code><a href="reference/save_installed_pkgs.html">save_installed_pkgs()</a></code>, after upgrading R</li>
 <li>
 <code><a href="reference/update_pkgs.html">update_pkgs()</a></code> – update all installed CRAN + Bioconductor packages in one non-interactive run, with logging and lock-retry handling; meant to be run in the background (e.g. <code>Rscript -e "myutil::update_pkgs()"</code>) rather than RStudio’s own (blocking) package updater</li>
+<li>
+<code><a href="reference/upgrade_r_library.html">upgrade_r_library()</a></code> – run in a newly installed R to bring over the packages from the old one: copies them for a patch upgrade (e.g. 4.6.1 to 4.6.2), or reinstalls each from where it came from (CRAN, GitHub, r-universe, …) for a minor upgrade; then test-loads them</li>
+<li>
+<code><a href="reference/installed_pkg_sources.html">installed_pkg_sources()</a></code> – where each installed package came from</li>
+<li>
+<code><a href="reference/outdated_pkgs.html">outdated_pkgs()</a></code> – packages with a newer <em>version</em> available (unlike <code><a href="https://rdrr.io/r/utils/update.packages.html" class="external-link">old.packages()</a></code>, which can flag hundreds whose version hasn’t changed), marking those whose newer version is on CRAN only as source so far</li>
 </ul>
 </div>
 <div class="section level2">

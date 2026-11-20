@@ -36,9 +36,12 @@ the row names.
 
 ``` r
 ls.objects()
-#> Error in is.na(obj.dim)[, 1]: subscript out of bounds
-ls.objects(pattern="*lm")
-#> Error in is.na(obj.dim)[, 1]: subscript out of bounds
+#> [1] Type    Size    Rows    Columns
+#> <0 rows> (or 0-length row.names)
+ls.objects(pattern="lm$")
+#> [1] Type    Size    Rows    Columns
+#> <0 rows> (or 0-length row.names)
 ls.objects(order.by="Type")
-#> Error in is.na(obj.dim)[, 1]: subscript out of bounds
+#> [1] Type    Size    Rows    Columns
+#> <0 rows> (or 0-length row.names)
 ```

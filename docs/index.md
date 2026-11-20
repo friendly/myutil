@@ -39,6 +39,18 @@ just to live in one place instead of being copy-pasted per package.
   non-interactive run, with logging and lock-retry handling; meant to be
   run in the background (e.g. `Rscript -e "myutil::update_pkgs()"`)
   rather than RStudio’s own (blocking) package updater
+- [`upgrade_r_library()`](https://friendly.github.io/myutil/reference/upgrade_r_library.md)
+  – run in a newly installed R to bring over the packages from the old
+  one: copies them for a patch upgrade (e.g. 4.6.1 to 4.6.2), or
+  reinstalls each from where it came from (CRAN, GitHub, r-universe, …)
+  for a minor upgrade; then test-loads them
+- [`installed_pkg_sources()`](https://friendly.github.io/myutil/reference/installed_pkg_sources.md)
+  – where each installed package came from
+- [`outdated_pkgs()`](https://friendly.github.io/myutil/reference/outdated_pkgs.md)
+  – packages with a newer *version* available (unlike
+  [`old.packages()`](https://rdrr.io/r/utils/update.packages.html),
+  which can flag hundreds whose version hasn’t changed), marking those
+  whose newer version is on CRAN only as source so far
 
 ## Package release / CRAN checks
 

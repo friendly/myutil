@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">myutil</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.9.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.10.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -47,7 +47,7 @@
 
 <dl><dt id="arg-update">update<a class="anchor" aria-label="anchor" href="#arg-update"></a></dt>
 <dd><p>Replace <code>inst/WORDLIST</code> wholesale via
-<code><a href="https://docs.ropensci.org/spelling//reference/wordlist.html" class="external-link">spelling::update_wordlist()</a></code>? Default <code>FALSE</code>, and deliberately hard
+<code><a href="https://docs.ropensci.org/spelling/reference/wordlist.html" class="external-link">spelling::update_wordlist()</a></code>? Default <code>FALSE</code>, and deliberately hard
 to trigger by accident – see Details.</p></dd>
 
 </dl></div>
@@ -57,7 +57,7 @@ to trigger by accident – see Details.</p></dd>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p><code><a href="https://docs.ropensci.org/spelling//reference/wordlist.html" class="external-link">spelling::update_wordlist()</a></code> doesn't add <em>selected</em> words, it replaces
+    <p><code><a href="https://docs.ropensci.org/spelling/reference/wordlist.html" class="external-link">spelling::update_wordlist()</a></code> doesn't add <em>selected</em> words, it replaces
 the entire wordlist with whatever <code>spell_check_package()</code> finds at that
 moment. Its confirmation prompt only fires when <code><a href="https://rdrr.io/r/base/interactive.html" class="external-link">interactive()</a></code>; in a
 non-interactive run (e.g. inside <code><a href="release_run_all.html">release_run_all()</a></code> run in the
@@ -65,6 +65,22 @@ background) that check is silently skipped, so it would accept every
 flagged word – real typos included – with no confirmation at all. Use
 <code><a href="release_spelling_add.html">release_spelling_add()</a></code> instead to add specific words you've actually
 reviewed.</p>
+    </div>
+    <div class="section level2">
+    <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
+    <div class="dont-index"><p>Other release checks:
+<code><a href="release_build.html">release_build()</a></code>,
+<code><a href="release_check.html">release_check()</a></code>,
+<code><a href="release_check_win.html">release_check_win()</a></code>,
+<code><a href="release_checks.html">release_checks</a></code>,
+<code><a href="release_cran_comments.html">release_cran_comments()</a></code>,
+<code><a href="release_document.html">release_document()</a></code>,
+<code><a href="release_preflight.html">release_preflight()</a></code>,
+<code><a href="release_revdep.html">release_revdep()</a></code>,
+<code><a href="release_run_all.html">release_run_all()</a></code>,
+<code><a href="release_site.html">release_site()</a></code>,
+<code><a href="release_spelling_add.html">release_spelling_add()</a></code>,
+<code><a href="release_urls.html">release_urls()</a></code></p></div>
     </div>
 
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

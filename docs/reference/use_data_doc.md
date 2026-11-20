@@ -69,7 +69,8 @@ use_data_doc(iris)
 unlink("iris.R")
 
 # using variable labels
-labels <- c("Sepal length (mm)", "Sepal width (mm)", "Petal length (mm)", "Petal width (mm)", "Iris species" )
+labels <- c("Sepal length (mm)", "Sepal width (mm)",
+            "Petal length (mm)", "Petal width (mm)", "Iris species")
 # console output
 zz <- use_data_doc(iris, filename=NA, labels=labels)
 cat(unlist(zz), sep="\n")

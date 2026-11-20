@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">myutil</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.9.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.10.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -32,6 +32,35 @@
     </div>
 
     <div class="section level2">
+<h2 class="pkg-version" data-toc-text="1.10.0" id="myutil-1100">myutil 1.10.0<a class="anchor" aria-label="anchor" href="#myutil-1100"></a></h2>
+<ul><li>New <code><a href="../reference/upgrade_r_library.html">upgrade_r_library()</a></code>, run in a newly installed R to bring over the packages installed under an older one. For a patch upgrade (same <code>x.y</code>) it copies the package folders, so packages from GitHub, r-universe, R-Forge and local files come along without reinstalling; for a minor upgrade it reinstalls each package from where it came from. Packages the new R already has are left alone; <code>translations</code> and packages built under R &lt; 4.0 are skipped; packages installed from local files are listed. With <code>check = TRUE</code> (default), the packages brought over are test-loaded in fresh R processes, in batches; <code>dry_run = TRUE</code> shows the plan.</li>
+<li>New <code><a href="../reference/installed_pkg_sources.html">installed_pkg_sources()</a></code>: classifies installed packages by where they came from (CRAN, another repository such as an r-universe, R-Forge, Bioconductor, GitHub/GitLab/Bitbucket, local), from the <code>Repository</code> and <code>Remote*</code> fields in their <code>DESCRIPTION</code>.</li>
+<li>New <code><a href="../reference/outdated_pkgs.html">outdated_pkgs()</a></code>: packages whose <em>version</em> on CRAN is newer than the installed one. <code><a href="https://rdrr.io/r/utils/update.packages.html" class="external-link">old.packages()</a></code> can flag hundreds of packages whose version hasn’t changed (e.g., right after an R upgrade), which <code><a href="https://rdrr.io/r/utils/update.packages.html" class="external-link">update.packages()</a></code> then reinstalls for nothing. Also shows the newest binary version and marks packages whose newer version is so far only available as source.</li>
+<li>
+<code><a href="../reference/save_installed_pkgs.html">save_installed_pkgs()</a></code> also saves <code>pkginfo</code>, the output of <code><a href="../reference/installed_pkg_sources.html">installed_pkg_sources()</a></code>, and <code><a href="../reference/restore_installed_pkgs.html">restore_installed_pkgs()</a></code> uses it to reinstall each package from where it came from, skipping packages already installed. Files saved by earlier versions still work (CRAN only).</li>
+<li>
+<code><a href="../reference/update_github.html">update_github()</a></code> uses <code><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">remotes::install_github()</a></code>; it imported <code><a href="https://devtools.r-lib.org/reference/install-deprecated.html" class="external-link">devtools::install_github()</a></code>, although devtools is only suggested, which made <code>R CMD check</code> fail.</li>
+<li>Fixes so that <code>R CMD check</code> is clean (0/0/0):
+<ul><li>
+<code><a href="../reference/ls.objects.html">ls.objects()</a></code> failed when there were no objects (as in a clean session); the example <code>pattern = "*lm"</code> was not a valid regular expression.</li>
+<li>
+<code><a href="../reference/setwd.html">setwd()</a></code>/<code><a href="../reference/cd.html">cd()</a></code> kept the previous directory in <code>.lastdir</code> in the user’s workspace; it is now kept inside the package.</li>
+<li>
+<code><a href="../reference/dropbox_folder.html">dropbox_folder()</a></code> no longer calls <code><a href="https://jeroen.r-universe.dev/jsonlite" class="external-link">require(jsonlite)</a></code> (it is imported).</li>
+<li>Declared the <code>utils</code> functions used by <code><a href="../reference/Rpackages.bib.html">Rpackages.bib()</a></code>, <code><a href="../reference/update_pkgs.html">update_pkgs()</a></code> and <code><a href="../reference/use_data_doc.html">use_data_doc()</a></code>; <code>.Rbuildignore</code> covers the pkgdown files; Description is a sentence.</li>
+</ul></li>
+</ul></div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="1.9.2" id="myutil-192">myutil 1.9.2<a class="anchor" aria-label="anchor" href="#myutil-192"></a></h2>
+<ul><li>
+<code><a href="../reference/Rpackages.bib.html">Rpackages.bib()</a></code> gains <code>add.pkg.doi = TRUE</code>: fills in the CRAN package DOI (<code>10.32614/CRAN.package.&lt;pkg&gt;</code>) on a package’s own <code>@Manual</code> entry when its <code>inst/CITATION</code> omits it. Restricted to CRAN-installed packages, <code>Manual</code> entries recognizably about the package itself (not vignettes or other software), and entries with no existing DOI.</li>
+</ul></div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="1.9.1" id="myutil-191">myutil 1.9.1<a class="anchor" aria-label="anchor" href="#myutil-191"></a></h2>
+<ul><li>
+<code><a href="../reference/update_pkgs.html">update_pkgs()</a></code>: packages that stay out of date because this session has them loaded (e.g., cli, glue, rlang, vctrs) are now actually updated. The old retry ran a child process while this session still held their DLLs, so it always failed. Now a background R process, started through WMI so that it isn’t killed along with this session, waits for the session to exit, then installs them and appends the results to the same log.</li>
+</ul></div>
+    <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.9.0" id="myutil-190">myutil 1.9.0<a class="anchor" aria-label="anchor" href="#myutil-190"></a></h2>
 <ul><li>First version with NEWS</li>
 <li>Added <code><a href="../reference/reset_par.html">reset_par()</a></code> (2026-09-01: was defined without <code>@export</code>/docs since first added, so never actually usable as <code><a href="../reference/reset_par.html">myutil::reset_par()</a></code>; now exported and documented)</li>
@@ -45,7 +74,8 @@
 <li>Added <code><a href="../reference/update_pkgs.html">update_pkgs()</a></code>, for non-interactive CRAN + Bioconductor package updates with logging and self-locked-DLL retry handling</li>
 <li>Added <code><a href="../reference/Rpackages.bib.html">Rpackages.bib()</a></code>, for maintaining a master BibTeX file of R package citations. Dropped the old per-entry CRAN-DOI-stamping step – <code><a href="https://rdrr.io/r/utils/citation.html" class="external-link">citation()</a></code> already supplies the correct DOI (or none) per entry as of R 4.x, and the old step clobbered legitimate non-CRAN DOIs on <code>Book</code>/<code>Article</code>-type citations (e.g. <code>citation("sf")</code>)</li>
 </ul></div>
-  </main></div>
+  </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
+    </nav></aside></div>
 
 
     <footer><div class="pkgdown-footer-left">

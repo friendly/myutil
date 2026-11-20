@@ -7,14 +7,17 @@
 <url><loc>https://friendly.github.io/myutil/reference/dropbox_folder.html</loc></url>
 <url><loc>https://friendly.github.io/myutil/reference/eps.html</loc></url>
 <url><loc>https://friendly.github.io/myutil/reference/index.html</loc></url>
+<url><loc>https://friendly.github.io/myutil/reference/installed_pkg_sources.html</loc></url>
 <url><loc>https://friendly.github.io/myutil/reference/ls.objects.html</loc></url>
 <url><loc>https://friendly.github.io/myutil/reference/lsall.html</loc></url>
 <url><loc>https://friendly.github.io/myutil/reference/magick_collage.html</loc></url>
 <url><loc>https://friendly.github.io/myutil/reference/man.html</loc></url>
 <url><loc>https://friendly.github.io/myutil/reference/my.par.html</loc></url>
 <url><loc>https://friendly.github.io/myutil/reference/myutil-package.html</loc></url>
+<url><loc>https://friendly.github.io/myutil/reference/outdated_pkgs.html</loc></url>
 <url><loc>https://friendly.github.io/myutil/reference/release_build.html</loc></url>
 <url><loc>https://friendly.github.io/myutil/reference/release_check.html</loc></url>
+<url><loc>https://friendly.github.io/myutil/reference/release_checks.html</loc></url>
 <url><loc>https://friendly.github.io/myutil/reference/release_check_win.html</loc></url>
 <url><loc>https://friendly.github.io/myutil/reference/release_cran_comments.html</loc></url>
 <url><loc>https://friendly.github.io/myutil/reference/release_document.html</loc></url>
@@ -36,6 +39,7 @@
 <url><loc>https://friendly.github.io/myutil/reference/sourceDir.html</loc></url>
 <url><loc>https://friendly.github.io/myutil/reference/update_github.html</loc></url>
 <url><loc>https://friendly.github.io/myutil/reference/update_pkgs.html</loc></url>
+<url><loc>https://friendly.github.io/myutil/reference/upgrade_r_library.html</loc></url>
 <url><loc>https://friendly.github.io/myutil/reference/use_data_doc.html</loc></url>
 </urlset>
 
