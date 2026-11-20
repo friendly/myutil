@@ -14,6 +14,11 @@
   `old.packages()` can flag hundreds of packages whose version hasn't changed (e.g., right
   after an R upgrade), which `update.packages()` then reinstalls for nothing. Also shows the newest
   binary version and marks packages whose newer version is so far only available as source.
+* `update_pkgs()` decides what to update with `outdated_pkgs()` rather than
+  `old.packages(checkBuilt = TRUE)`, over the CRAN and Bioconductor repositories in one pass
+  (replacing `BiocManager::install(update = TRUE)`, which has the same problem), so it no
+  longer reinstalls same-version packages. New argument `source` (default `TRUE`): `FALSE`
+  skips updates that are so far source-only.
 * `save_installed_pkgs()` also saves `pkginfo`, the output of `installed_pkg_sources()`, and
   `restore_installed_pkgs()` uses it to reinstall each package from where it came from, skipping
   packages already installed. Files saved by earlier versions still work (CRAN only).

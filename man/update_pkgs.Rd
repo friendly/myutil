@@ -4,10 +4,14 @@
 \alias{update_pkgs}
 \title{Update all installed R packages (CRAN + Bioconductor) in one run}
 \usage{
-update_pkgs(log_dir = "C:/Dropbox/R/update-pkgs-log")
+update_pkgs(log_dir = "C:/Dropbox/R/update-pkgs-log", source = TRUE)
 }
 \arguments{
 \item{log_dir}{directory to write the run's log file to}
+
+\item{source}{also update packages whose new version is (so far) only
+available as source, compiling them (needs Rtools)? If \code{FALSE}, they are
+listed and left for a later run, when CRAN's binaries are out.}
 }
 \value{
 the log file path, invisibly
@@ -15,6 +19,13 @@ the log file path, invisibly
 \description{
 Designed to be launched non-interactively (e.g. via \verb{Rscript -e "myutil::update_pkgs()"}, in the background), instead of RStudio's
 Tools > Check for Package Updates, which is slow and blocks the GUI.
+}
+\details{
+Which packages need updating is decided by \code{\link[=outdated_pkgs]{outdated_pkgs()}} -- a newer
+\emph{version} on CRAN (or Bioconductor) -- not by \code{old.packages()}, which
+(also via RStudio's Check for Package Updates and BiocManager) can flag
+hundreds of packages whose version hasn't changed, e.g. right after an R
+upgrade, and reinstall them all for nothing.
 }
 \section{Windows note on file locks}{
 
@@ -41,17 +52,15 @@ to an hour). If packages are still out of date after the retry, the lock
 is coming from another running R/RStudio session -- close it and re-run.
 }
 
-\section{Note on needs_compilation packages}{
+\section{Note on source-only updates}{
 
 A package sometimes has a newer \emph{source} version on CRAN than the
-Windows \emph{binary} build (\code{old.packages(checkBuilt = TRUE)} shows this as
-\code{needs_compilation: TRUE}, with \code{Installed < ReposVer} even right after
-an update). This isn't a lock or a failure -- CRAN's Windows binary
-build for that version just hasn't been published yet, usually within a
-day or so of the source release. This function runs non-interactively
-(\code{ask = FALSE}), so it never shows the "install from sources?" prompt --
-but with Rtools installed, \code{update.packages()} compiles these silently
-and resolves them in the same run. The end-of-run summary's "Installed
-(from source)" count is exactly this set.
+Windows \emph{binary} build (\code{\link[=outdated_pkgs]{outdated_pkgs()}} marks these \code{source_only}).
+This isn't a lock or a failure -- CRAN's Windows binary build for that
+version just hasn't been published yet, usually within a few days of the
+source release. This function runs non-interactively (\code{ask = FALSE}), so
+it never shows the "install from sources?" prompt -- with \code{source = TRUE}
+and Rtools installed, \code{update.packages()} compiles these silently. The
+end-of-run summary's "Installed (from source)" count is exactly this set.
 }
 
