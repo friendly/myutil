@@ -210,12 +210,12 @@ update_pkgs <- function(log_dir = "C:/Dropbox/R/update-pkgs-log", source = TRUE)
   }
 
   end_time <- Sys.time()
-  cat(glue::glue("\n=== Finished {end_time} (elapsed: {round(difftime(end_time, start_time, units = 'mins'), 1)} min) ===\n"))
+  cat(glue::glue("\n=== Finished {end_time} (elapsed: {round(difftime(end_time, start_time, units = 'mins'), 1)} min) ==="), "\n")
 
   close_log() # close explicitly here so the "Log written to" message below
               # prints to the console, not into the log file it's announcing
 
-  cat(glue::glue("Log written to {log_file}\n"))
+  cat(glue::glue("Log written to {log_file}"), "\n")
   invisible(log_file)
 }
 
