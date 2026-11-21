@@ -36,7 +36,7 @@ installed_pkg_sources <- function(lib.loc = NULL) {
   fields <- c("Repository", "RemoteType", "RemoteUsername", "RemoteRepo", "RemoteSubdir",
               "RemoteHost", "biocViews")
   ip <- utils::installed.packages(lib.loc = lib.loc, fields = fields, noCache = TRUE)
-  ip <- ip[is.na(ip[, "Priority"]), , drop = FALSE]
+  ip <- ip[!ip[, "Priority"] %in% c("base", "recommended"), , drop = FALSE]   # keep "optional"
   ip <- ip[!duplicated(ip[, "Package"]), , drop = FALSE]    # first one on the search path wins
 
   built <- built_version(ip[, "Built"])

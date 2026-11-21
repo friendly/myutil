@@ -10,6 +10,8 @@
 * New `installed_pkg_sources()`: classifies installed packages by where they came from (CRAN,
   another repository such as an r-universe, R-Forge, Bioconductor, GitHub/GitLab/Bitbucket, local),
   from the `Repository` and `Remote*` fields in their `DESCRIPTION`.
+  Packages that declare `Priority: optional` (e.g. `deming`) are included; only base and
+  recommended packages are left out.
 * New `outdated_pkgs()`: packages whose *version* on CRAN is newer than the installed one.
   `old.packages()` can flag hundreds of packages whose version hasn't changed (e.g., right
   after an R upgrade), which `update.packages()` then reinstalls for nothing. Also shows the newest
