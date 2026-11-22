@@ -225,7 +225,7 @@ outdated_pkgs <- function(repos = getOption("repos"), lib.loc = NULL) {
   sv <- src[pk, "Version"]
   bv <- if (is.null(bin)) rep(NA_character_, length(pk))
         else unname(bin[match(pk, rownames(bin)), "Version"])
-  newer <- function(a, b) !is.na(a) & package_version(ifelse(is.na(a), "0", a)) > package_version(b)
+  newer <- function(a, b) !is.na(a) & package_version(ifelse(is.na(a), "0.0", a)) > package_version(b)
   avail <- ifelse(newer(bv, sv), bv, sv)
   keep <- newer(avail, inst)
   data.frame(Package = pk, Installed = inst, Available = avail, binary = bv,
