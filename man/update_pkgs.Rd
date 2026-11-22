@@ -4,7 +4,11 @@
 \alias{update_pkgs}
 \title{Update all installed R packages (CRAN + Bioconductor) in one run}
 \usage{
-update_pkgs(log_dir = "C:/Dropbox/R/update-pkgs-log", source = TRUE)
+update_pkgs(
+  log_dir = "C:/Dropbox/R/update-pkgs-log",
+  source = TRUE,
+  skip = NULL
+)
 }
 \arguments{
 \item{log_dir}{directory to write the run's log file to}
@@ -12,6 +16,10 @@ update_pkgs(log_dir = "C:/Dropbox/R/update-pkgs-log", source = TRUE)
 \item{source}{also update packages whose new version is (so far) only
 available as source, compiling them (needs Rtools)? If \code{FALSE}, they are
 listed and left for a later run, when CRAN's binaries are out.}
+
+\item{skip}{character vector of packages not to update, e.g. ones whose new version needs
+software that isn't installed here (e.g. \code{"rjags"}, which needs JAGS), or that you have installed from
+GitHub on purpose}
 }
 \value{
 the log file path, invisibly

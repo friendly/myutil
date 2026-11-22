@@ -24,6 +24,9 @@
 #' @param source also update packages whose new version is (so far) only
 #'   available as source, compiling them (needs Rtools)? If `FALSE`, they are
 #'   listed and left for a later run, when CRAN's binaries are out.
+#' @param skip character vector of packages not to update, e.g. ones whose new version needs
+#'   software that isn't installed here (e.g. `"rjags"`, which needs JAGS), or that you have installed from
+#'   GitHub on purpose
 #' @return the log file path, invisibly
 #' @export
 #' @importFrom utils installed.packages update.packages
@@ -59,7 +62,8 @@
 #' it never shows the "install from sources?" prompt -- with `source = TRUE`
 #' and Rtools installed, `update.packages()` compiles these silently. The
 #' end-of-run summary's "Installed (from source)" count is exactly this set.
-update_pkgs <- function(log_dir = "C:/Dropbox/R/update-pkgs-log", source = TRUE) {
+update_pkgs <- function(log_dir = "C:/Dropbox/R/update-pkgs-log", source = TRUE,
+                        skip = NULL) {
   start_time <- Sys.time()
 
   if (!dir.exists(log_dir)) dir.create(log_dir, recursive = TRUE)
@@ -78,17 +82,18 @@ update_pkgs <- function(log_dir = "C:/Dropbox/R/update-pkgs-log", source = TRUE)
   on.exit(close_log(), add = TRUE)
 
   cat(glue::glue("=== R package update started {start_time} ===\n\n"))
+  if (length(skip)) cat("Skipping (skip =):", paste(skip, collapse = ", "), "\n\n")
 
   # Detect other running R sessions (Windows) that could be holding package
   # DLLs open -- informational only, doesn't block the update.
   rsessions <- tryCatch({
-    tasks <- system("tasklist /FI \"IMAGENAME eq rsession.exe\"", intern = TRUE)
-    sum(grepl("rsession.exe", tasks, fixed = TRUE))
+    tasks <- system("tasklist /FI \"IMAGENAME eq rsession*\"", intern = TRUE)
+    sum(grepl("^rsession", tasks))   # RStudio runs R as rsession.exe or rsession-utf8.exe
   }, error = function(e) NA)
 
   if (!is.na(rsessions) && rsessions > 0) {
     cat(glue::glue(
-      "Note: {rsessions} RStudio session(s) (rsession.exe) currently running. ",
+      "Note: {rsessions} RStudio session(s) (rsession*.exe) currently running. ",
       "Packages loaded there may fail to update (locked DLL) -- safe, just ",
       "incomplete; re-run after closing RStudio to catch the rest.\n\n"
     ))
@@ -114,6 +119,7 @@ update_pkgs <- function(log_dir = "C:/Dropbox/R/update-pkgs-log", source = TRUE)
   # Packages with a newer *version* available (not just a newer build)
   find_old <- function() {
     op <- outdated_pkgs(repos = repos)
+    op <- op[!op$Package %in% skip, , drop = FALSE]
     if (!source && any(op$source_only)) {
       cat(glue::glue(
         "Skipping {sum(op$source_only)} package(s) whose update is source-only so far ",

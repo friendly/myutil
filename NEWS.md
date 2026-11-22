@@ -1,5 +1,8 @@
 # myutil 1.10.0
 
+* `update_pkgs()` gains a `skip` argument, for packages not to update (e.g. `skip = "rjags"`).
+  Its check for open RStudio sessions now also finds `rsession-utf8.exe`, the name that
+  current RStudio uses for its R process.
 * New `upgrade_r_library()`, run in a newly installed R to bring over the packages installed
   under an older one. For a patch upgrade (same `x.y`) it copies the package folders, so packages
   from GitHub, r-universe, R-Forge and local files come along without reinstalling; for a minor
